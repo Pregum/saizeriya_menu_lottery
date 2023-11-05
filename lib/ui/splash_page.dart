@@ -30,33 +30,52 @@ class SplashPage extends HookConsumerWidget {
       return null;
     }, [supabase.client.auth.onAuthStateChange]);
 
-    final memos = ref.watch(fetchAllMenusProvider);
+    final menus = ref.watch(fetchAllMenusProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('ホーム画面')),
-      body: SingleChildScrollView(
-        child: memos.when(
-          data: (memos) {
-            if (memos.isEmpty) {
-              return const Center(child: Text('データが存在しませんでした'));
+      body: RefreshIndicator(
+        onRefresh: () async {
+          debugPrint('refresh');
+          return ref.refresh(fetchAllMenusProvider.future);
+        },
+        child: menus.when(
+          data: (m) {
+            if (m.isEmpty) {
+              return ListView(
+                children: const [
+                  Center(
+                    child: Text('データが存在しませんでした'),
+                  ),
+                ],
+              );
             }
 
             return ListView.builder(
+              physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                final item = memos[index];
+                final item = m[index];
                 return ListTile(
                   leading: Text('no. ${index + 1}'),
                   title: Text('name: ${item.name}'),
                 );
               },
-              itemCount: memos.length,
+              itemCount: m.length,
             );
           },
           error: (Object error, StackTrace stackTrace) {
-            return Text('oops! error: $error, stackTrace: $stackTrace');
+            return ListView(
+              children: [
+                Center(
+                  child: Text('oops! error: $error, stackTrace: $stackTrace'),
+                ),
+              ],
+            );
           },
           loading: () {
-            return const CircularProgressIndicator.adaptive();
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
           },
         ),
       ),

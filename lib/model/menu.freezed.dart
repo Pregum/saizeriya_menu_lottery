@@ -20,8 +20,10 @@ Menu _$MenuFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Menu {
-  String get id => throw _privateConstructorUsedError;
-  String get name => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'food_type_id')
+  int? get foodTypeId => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +35,8 @@ abstract class $MenuCopyWith<$Res> {
   factory $MenuCopyWith(Menu value, $Res Function(Menu) then) =
       _$MenuCopyWithImpl<$Res, Menu>;
   @useResult
-  $Res call({String id, String name});
+  $Res call(
+      {int id, String? name, @JsonKey(name: 'food_type_id') int? foodTypeId});
 }
 
 /// @nodoc
@@ -50,17 +53,22 @@ class _$MenuCopyWithImpl<$Res, $Val extends Menu>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? name = freezed,
+    Object? foodTypeId = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as int,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      foodTypeId: freezed == foodTypeId
+          ? _value.foodTypeId
+          : foodTypeId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -72,7 +80,8 @@ abstract class _$$MenuImplCopyWith<$Res> implements $MenuCopyWith<$Res> {
       __$$MenuImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name});
+  $Res call(
+      {int id, String? name, @JsonKey(name: 'food_type_id') int? foodTypeId});
 }
 
 /// @nodoc
@@ -86,17 +95,22 @@ class __$$MenuImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = null,
+    Object? name = freezed,
+    Object? foodTypeId = freezed,
   }) {
     return _then(_$MenuImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as String,
-      name: null == name
+              as int,
+      name: freezed == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
+      foodTypeId: freezed == foodTypeId
+          ? _value.foodTypeId
+          : foodTypeId // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -104,20 +118,26 @@ class __$$MenuImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$MenuImpl implements _Menu {
-  _$MenuImpl({required this.id, this.name = ''});
+  _$MenuImpl(
+      {required this.id,
+      this.name = '',
+      @JsonKey(name: 'food_type_id') this.foodTypeId = null});
 
   factory _$MenuImpl.fromJson(Map<String, dynamic> json) =>
       _$$MenuImplFromJson(json);
 
   @override
-  final String id;
+  final int id;
   @override
   @JsonKey()
-  final String name;
+  final String? name;
+  @override
+  @JsonKey(name: 'food_type_id')
+  final int? foodTypeId;
 
   @override
   String toString() {
-    return 'Menu(id: $id, name: $name)';
+    return 'Menu(id: $id, name: $name, foodTypeId: $foodTypeId)';
   }
 
   @override
@@ -126,12 +146,14 @@ class _$MenuImpl implements _Menu {
         (other.runtimeType == runtimeType &&
             other is _$MenuImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.foodTypeId, foodTypeId) ||
+                other.foodTypeId == foodTypeId));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, foodTypeId);
 
   @JsonKey(ignore: true)
   @override
@@ -148,14 +170,20 @@ class _$MenuImpl implements _Menu {
 }
 
 abstract class _Menu implements Menu {
-  factory _Menu({required final String id, final String name}) = _$MenuImpl;
+  factory _Menu(
+      {required final int id,
+      final String? name,
+      @JsonKey(name: 'food_type_id') final int? foodTypeId}) = _$MenuImpl;
 
   factory _Menu.fromJson(Map<String, dynamic> json) = _$MenuImpl.fromJson;
 
   @override
-  String get id;
+  int get id;
   @override
-  String get name;
+  String? get name;
+  @override
+  @JsonKey(name: 'food_type_id')
+  int? get foodTypeId;
   @override
   @JsonKey(ignore: true)
   _$$MenuImplCopyWith<_$MenuImpl> get copyWith =>
