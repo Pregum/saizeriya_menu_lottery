@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'memo.dart';
+part of 'menu.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,32 +14,32 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-Memo _$MemoFromJson(Map<String, dynamic> json) {
-  return _Memo.fromJson(json);
+Menu _$MenuFromJson(Map<String, dynamic> json) {
+  return _Menu.fromJson(json);
 }
 
 /// @nodoc
-mixin _$Memo {
+mixin _$Menu {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $MemoCopyWith<Memo> get copyWith => throw _privateConstructorUsedError;
+  $MenuCopyWith<Menu> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $MemoCopyWith<$Res> {
-  factory $MemoCopyWith(Memo value, $Res Function(Memo) then) =
-      _$MemoCopyWithImpl<$Res, Memo>;
+abstract class $MenuCopyWith<$Res> {
+  factory $MenuCopyWith(Menu value, $Res Function(Menu) then) =
+      _$MenuCopyWithImpl<$Res, Menu>;
   @useResult
   $Res call({String id, String name});
 }
 
 /// @nodoc
-class _$MemoCopyWithImpl<$Res, $Val extends Memo>
-    implements $MemoCopyWith<$Res> {
-  _$MemoCopyWithImpl(this._value, this._then);
+class _$MenuCopyWithImpl<$Res, $Val extends Menu>
+    implements $MenuCopyWith<$Res> {
+  _$MenuCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -66,20 +66,20 @@ class _$MemoCopyWithImpl<$Res, $Val extends Memo>
 }
 
 /// @nodoc
-abstract class _$$MemoImplCopyWith<$Res> implements $MemoCopyWith<$Res> {
-  factory _$$MemoImplCopyWith(
-          _$MemoImpl value, $Res Function(_$MemoImpl) then) =
-      __$$MemoImplCopyWithImpl<$Res>;
+abstract class _$$MenuImplCopyWith<$Res> implements $MenuCopyWith<$Res> {
+  factory _$$MenuImplCopyWith(
+          _$MenuImpl value, $Res Function(_$MenuImpl) then) =
+      __$$MenuImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call({String id, String name});
 }
 
 /// @nodoc
-class __$$MemoImplCopyWithImpl<$Res>
-    extends _$MemoCopyWithImpl<$Res, _$MemoImpl>
-    implements _$$MemoImplCopyWith<$Res> {
-  __$$MemoImplCopyWithImpl(_$MemoImpl _value, $Res Function(_$MemoImpl) _then)
+class __$$MenuImplCopyWithImpl<$Res>
+    extends _$MenuCopyWithImpl<$Res, _$MenuImpl>
+    implements _$$MenuImplCopyWith<$Res> {
+  __$$MenuImplCopyWithImpl(_$MenuImpl _value, $Res Function(_$MenuImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -88,7 +88,7 @@ class __$$MemoImplCopyWithImpl<$Res>
     Object? id = null,
     Object? name = null,
   }) {
-    return _then(_$MemoImpl(
+    return _then(_$MenuImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -103,11 +103,11 @@ class __$$MemoImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$MemoImpl implements _Memo {
-  _$MemoImpl({required this.id, this.name = ''});
+class _$MenuImpl implements _Menu {
+  _$MenuImpl({required this.id, this.name = ''});
 
-  factory _$MemoImpl.fromJson(Map<String, dynamic> json) =>
-      _$$MemoImplFromJson(json);
+  factory _$MenuImpl.fromJson(Map<String, dynamic> json) =>
+      _$$MenuImplFromJson(json);
 
   @override
   final String id;
@@ -117,14 +117,14 @@ class _$MemoImpl implements _Memo {
 
   @override
   String toString() {
-    return 'Memo(id: $id, name: $name)';
+    return 'Menu(id: $id, name: $name)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$MemoImpl &&
+            other is _$MenuImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name));
   }
@@ -136,21 +136,21 @@ class _$MemoImpl implements _Memo {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$MemoImplCopyWith<_$MemoImpl> get copyWith =>
-      __$$MemoImplCopyWithImpl<_$MemoImpl>(this, _$identity);
+  _$$MenuImplCopyWith<_$MenuImpl> get copyWith =>
+      __$$MenuImplCopyWithImpl<_$MenuImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$MemoImplToJson(
+    return _$$MenuImplToJson(
       this,
     );
   }
 }
 
-abstract class _Memo implements Memo {
-  factory _Memo({required final String id, final String name}) = _$MemoImpl;
+abstract class _Menu implements Menu {
+  factory _Menu({required final String id, final String name}) = _$MenuImpl;
 
-  factory _Memo.fromJson(Map<String, dynamic> json) = _$MemoImpl.fromJson;
+  factory _Menu.fromJson(Map<String, dynamic> json) = _$MenuImpl.fromJson;
 
   @override
   String get id;
@@ -158,6 +158,6 @@ abstract class _Memo implements Memo {
   String get name;
   @override
   @JsonKey(ignore: true)
-  _$$MemoImplCopyWith<_$MemoImpl> get copyWith =>
+  _$$MenuImplCopyWith<_$MenuImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

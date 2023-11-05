@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:saizeriya_menu_lottery/route.dart';
 
@@ -29,11 +30,30 @@ class SplashPage extends HookConsumerWidget {
       return null;
     }, [supabase.client.auth.onAuthStateChange]);
 
+    final memos = ref.watch(fetchAllMenusProvider);
+
     return Scaffold(
       appBar: AppBar(title: const Text('ホーム画面')),
-      body: Center(
-        child: Container(
-          color: Colors.amber[300],
+      body: SingleChildScrollView(
+        child: memos.when(
+          data: (memos) {
+            return ListView.builder(
+              itemBuilder: (context, index) {
+                final item = memos[index];
+                return ListTile(
+                  leading: Text('no. ${index + 1}'),
+                  title: Text('name: ${item.name}'),
+                );
+              },
+              itemCount: memos.length,
+            );
+          },
+          error: (Object error, StackTrace stackTrace) {
+            return Text('oops! error: $error, stackTrace: $stackTrace');
+          },
+          loading: () {
+            return const CircularProgressIndicator.adaptive();
+          },
         ),
       ),
     );

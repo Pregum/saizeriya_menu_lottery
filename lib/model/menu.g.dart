@@ -1,17 +1,17 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'memo.dart';
+part of 'menu.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$MemoImpl _$$MemoImplFromJson(Map<String, dynamic> json) => _$MemoImpl(
+_$MenuImpl _$$MenuImplFromJson(Map<String, dynamic> json) => _$MenuImpl(
       id: json['id'] as String,
       name: json['name'] as String? ?? '',
     );
 
-Map<String, dynamic> _$$MemoImplToJson(_$MemoImpl instance) =>
+Map<String, dynamic> _$$MenuImplToJson(_$MenuImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
