@@ -6,6 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:saizeriya_menu_lottery/route.dart';
 import 'package:saizeriya_menu_lottery/theme/my_theme.dart';
+import 'package:saizeriya_menu_lottery/ui/home_page.dart';
 import 'package:saizeriya_menu_lottery/ui/splash_page.dart';
 import 'package:saizeriya_menu_lottery/ui/my_page.dart';
 
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder>{
         MyRoute.root: (_) => const SplashPage(),
+        MyRoute.home: (context) => HomePage(parentBuildContext: context),
         MyRoute.myPage: (_) => const MyPage(),
       },
     );
