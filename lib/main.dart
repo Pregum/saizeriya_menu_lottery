@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
+import 'package:saizeriya_menu_lottery/route.dart';
 import 'package:saizeriya_menu_lottery/splash_page.dart';
 
 Future<void> main() async {
@@ -45,11 +46,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.deepPurple,
+          primary: Colors.green[300],
+        ),
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      routes: <String, WidgetBuilder>{'/': (_) => const SplashPage()},
+      routes: <String, WidgetBuilder>{
+        MyRoute.root: (_) => const SplashPage(),
+      },
     );
   }
 }
