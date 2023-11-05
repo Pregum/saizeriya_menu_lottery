@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/components/genre_menu.dart';
 import 'package:saizeriya_menu_lottery/components/horizontal_list_view.dart';
-import 'package:saizeriya_menu_lottery/model/menu.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 
 class HomePage extends HookConsumerWidget {
