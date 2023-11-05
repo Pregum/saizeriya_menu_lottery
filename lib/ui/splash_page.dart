@@ -33,7 +33,9 @@ class SplashPage extends HookConsumerWidget {
     final menus = ref.watch(fetchAllMenusProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('ホーム画面')),
+      appBar: AppBar(
+        title: const Text('ホーム画面'),
+      ),
       body: RefreshIndicator(
         onRefresh: () async {
           debugPrint('refresh');
@@ -52,12 +54,14 @@ class SplashPage extends HookConsumerWidget {
             }
 
             return ListView.builder(
-              physics: const BouncingScrollPhysics(),
+              physics: const AlwaysScrollableScrollPhysics(
+                parent: BouncingScrollPhysics(),
+              ),
               itemBuilder: (context, index) {
                 final item = m[index];
                 return ListTile(
-                  leading: Text('no. ${index + 1}'),
-                  title: Text('name: ${item.name}'),
+                  leading: Text('${index + 1}'),
+                  title: Text('${item.name}'),
                 );
               },
               itemCount: m.length,

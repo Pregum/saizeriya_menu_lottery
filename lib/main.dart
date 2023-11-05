@@ -5,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:saizeriya_menu_lottery/route.dart';
+import 'package:saizeriya_menu_lottery/theme/my_theme.dart';
 import 'package:saizeriya_menu_lottery/ui/splash_page.dart';
 import 'package:saizeriya_menu_lottery/ui/my_page.dart';
 
@@ -50,13 +51,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          primary: Colors.green[300],
-        ),
-        useMaterial3: true,
-      ),
+      theme: myTheme,
+      // theme: ThemeData(
+      //   colorScheme: ColorScheme.fromSeed(
+      //     seedColor: Colors.deepPurple,
+      //     primary: Colors.green[300],
+      //   ),
+      //   useMaterial3: true,
+      // ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder>{
         MyRoute.root: (_) => const SplashPage(),
