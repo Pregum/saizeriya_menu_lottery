@@ -53,14 +53,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: myTheme,
-      // theme: ThemeData(
-      //   colorScheme: ColorScheme.fromSeed(
-      //     seedColor: Colors.deepPurple,
-      //     primary: Colors.green[300],
-      //   ),
-      //   useMaterial3: true,
-      // ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder>{
         MyRoute.root: (_) => const SplashPage(),
         MyRoute.home: (context) => HomePage(parentBuildContext: context),
