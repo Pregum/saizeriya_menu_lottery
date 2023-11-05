@@ -22,10 +22,12 @@ Future<void> main() async {
       final supabaseAsync = supabaseAsyncProvider(url, anonKey);
       final rootContainer = ProviderContainer();
       final supabase = await rootContainer.read(supabaseAsync.future);
-      final childContainer =
-          ProviderContainer(parent: rootContainer, overrides: [
-        supabaseProvider.overrideWithValue(supabase),
-      ]);
+      final childContainer = ProviderContainer(
+        parent: rootContainer,
+        overrides: [
+          supabaseProvider.overrideWithValue(supabase),
+        ],
+      );
 
       runApp(
         UncontrolledProviderScope(
@@ -35,7 +37,7 @@ Future<void> main() async {
       );
     },
     (error, stackTrace) {
-      // TODO: loggerへログを流す処理を入れる
+      debugPrint('zoned guarded error!!!!11!');
     },
   );
 }

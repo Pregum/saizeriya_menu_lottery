@@ -7,7 +7,7 @@ part 'menu_repository.g.dart';
 @Riverpod(dependencies: [supabase])
 Future<List<Menu>> fetchAllMenus(FetchAllMenusRef ref) async {
   final repo = ref.read(supabaseProvider);
-  final result = await repo.client.from('menus').select('*');
+  final result = await repo.client.from('menus').select<List<dynamic>>('*');
   final menus = result.map((e) => Menu.fromJson(e));
-  return menus;
+  return menus.toList();
 }

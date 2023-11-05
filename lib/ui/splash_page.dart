@@ -37,6 +37,10 @@ class SplashPage extends HookConsumerWidget {
       body: SingleChildScrollView(
         child: memos.when(
           data: (memos) {
+            if (memos.isEmpty) {
+              return const Center(child: Text('データが存在しませんでした'));
+            }
+
             return ListView.builder(
               itemBuilder: (context, index) {
                 final item = memos[index];
