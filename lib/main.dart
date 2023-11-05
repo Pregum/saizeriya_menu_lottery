@@ -17,7 +17,9 @@ Future<void> main() async {
       await dotenv.load(fileName: '.env');
       final url = dotenv.get('SUPABASE_URL');
       final anonKey = dotenv.get('SUPABASE_ANONKEY');
-      final supabaseAsync = SupabaseAsyncProvider(url, anonKey);
+      debugPrint('url: $url');
+      debugPrint('anonkey: $anonKey');
+      final supabaseAsync = supabaseAsyncProvider(url, anonKey);
       final rootContainer = ProviderContainer();
       final supabase = await rootContainer.read(supabaseAsync.future);
       final childContainer =
