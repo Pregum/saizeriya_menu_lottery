@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:saizeriya_menu_lottery/model/menu.dart';
-import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:saizeriya_menu_lottery/route.dart';
 import 'package:saizeriya_menu_lottery/ui/home_page.dart';
@@ -72,50 +71,6 @@ class SplashPage extends HookConsumerWidget {
         ),
         decoration: const NavBarDecoration(colorBehindNavBar: Colors.indigo),
       ),
-    );
-  }
-
-  Widget _buildSpecificGenreMenu(AsyncValue<List<Menu>> menus) {
-    return menus.when(
-      data: (m) {
-        if (m.isEmpty) {
-          return ListView(
-            children: const [
-              Center(
-                child: Text('データが存在しませんでした'),
-              ),
-            ],
-          );
-        }
-
-        return ListView.builder(
-          physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics(),
-          ),
-          itemBuilder: (context, index) {
-            final item = m[index];
-            return ListTile(
-              leading: Text('${index + 1}'),
-              title: Text('${item.name}'),
-            );
-          },
-          itemCount: m.length,
-        );
-      },
-      error: (Object error, StackTrace stackTrace) {
-        return ListView(
-          children: [
-            Center(
-              child: Text('oops! error: $error, stackTrace: $stackTrace'),
-            ),
-          ],
-        );
-      },
-      loading: () {
-        return const Center(
-          child: CircularProgressIndicator.adaptive(),
-        );
-      },
     );
   }
 }

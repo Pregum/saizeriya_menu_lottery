@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:saizeriya_menu_lottery/components/genre_menu.dart';
+import 'package:saizeriya_menu_lottery/components/horizontal_list_view.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -15,76 +17,97 @@ class HomePage extends HookConsumerWidget {
           debugPrint('refresh');
           return ref.refresh(fetchAllMenusProvider.future);
         },
-        // child: _buildSpecificGenreMenu(menus),
         child: CustomScrollView(
           slivers: [
-            const SliverAppBar(
+            SliverAppBar(
+              floating: true,
               centerTitle: true,
-              title: Text('ホーム画面'),
-            ),
-            const SliverToBoxAdapter(
-              child: SizedBox(
-                height: 8,
+              title: Text(
+                'グランドメニュー',
+                style: Theme.of(context)
+                    .textTheme
+                    .titleLarge
+                    ?.copyWith(color: Colors.white),
               ),
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'サラダ',
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    TextButton(
-                      child: Text(
-                        '全て表示',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      onPressed: () {
-                        // TODO: サラダの表示する画面へ遷移する処理を実装
-                      },
-                    ),
-                  ],
-                ),
-              ),
+            ...buildGenreMenu(
+              title: 'サラダ',
+              context: context,
+              onTapShowAll: () {},
             ),
-            const SliverToBoxAdapter(
-                child: SizedBox(
-              height: 8,
-            )),
-            menus.when(
-              data: (data) => SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 120,
-                  width: MediaQuery.of(context).size.width,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        color: Colors.teal,
-                        // height: 50,
-                        width: 120,
-                        margin: const EdgeInsets.all(8.0),
-                      );
-                    },
-                    // itemCount: data.length,
-                    itemCount: 10,
-                  ),
-                ),
-              ),
-              error: (Object error, StackTrace stackTrace) {
-                return const SliverToBoxAdapter(
-                  child: Center(
-                    child: Text('読み込みエラーが発生しました。'),
-                  ),
-                );
-              },
-              loading: () => const SliverToBoxAdapter(
-                child: CircularProgressIndicator.adaptive(),
-              ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'スープ',
+              context: context,
+              onTapShowAll: () {},
             ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: '焼きたてパン',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'ドリンクバー',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: '前菜・おつまみ',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'ワイン',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'ドリア＆グラタン',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'ピザ',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'パスタ',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'ハンバーグ',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'チキン',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'ステーキ',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
+            ...buildGenreMenu(
+              title: 'デザート',
+              context: context,
+              onTapShowAll: () {},
+            ),
+            HorizontalListView(snapshot: menus),
           ],
         ),
       ),
