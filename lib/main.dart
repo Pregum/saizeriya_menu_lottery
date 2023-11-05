@@ -5,7 +5,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:saizeriya_menu_lottery/route.dart';
-import 'package:saizeriya_menu_lottery/splash_page.dart';
+import 'package:saizeriya_menu_lottery/ui/splash_page.dart';
+import 'package:saizeriya_menu_lottery/ui/my_page.dart';
 
 Future<void> main() async {
   // runZonedGuardedを使う場合は、その中でensureInitializedとその後続の処理を呼び出すようにする
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       routes: <String, WidgetBuilder>{
         MyRoute.root: (_) => const SplashPage(),
+        MyRoute.myPage: (_) => const MyPage(),
       },
     );
   }
