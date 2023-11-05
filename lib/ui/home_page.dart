@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/components/genre_menu.dart';
 import 'package:saizeriya_menu_lottery/components/horizontal_list_view.dart';
+import 'package:saizeriya_menu_lottery/model/menu.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 
 class HomePage extends HookConsumerWidget {
@@ -35,7 +36,23 @@ class HomePage extends HookConsumerWidget {
               context: context,
               onTapShowAll: () {},
             ),
-            HorizontalListView(snapshot: menus),
+            HorizontalListView(
+              snapshot: menus,
+              itemDelegate: (item, index) {
+                return Container(
+                  color: Colors.tealAccent,
+                  width: 120,
+                  margin: const EdgeInsets.all(8.0),
+                  child: item.imageUrl.isNotEmpty
+                      ? Image.network(
+                          item.imageUrl,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Text('error! $error'),
+                        )
+                      : null,
+                );
+              },
+            ),
             ...buildGenreMenu(
               title: 'スープ',
               context: context,
