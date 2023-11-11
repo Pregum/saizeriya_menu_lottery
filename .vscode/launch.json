@@ -1,0 +1,34 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "saizeriya_menu_lottery",
+      "request": "launch",
+      "type": "dart"
+    },
+    {
+      "name": "run first_ex_page",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "-t",
+        "lib/sandbox/first_ex_page.dart"
+      ]
+    },
+    {
+      "name": "saizeriya_menu_lottery (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "saizeriya_menu_lottery (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    }
+  ]
+}
