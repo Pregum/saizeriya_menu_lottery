@@ -10,6 +10,7 @@ class HomePage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final menus = ref.watch(fetchAllMenusProvider);
+    final repository = ref.watch(menuRepositoryProvider);
 
     return Scaffold(
       body: RefreshIndicator(
