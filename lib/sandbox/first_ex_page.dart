@@ -27,28 +27,33 @@ class FirstExPage extends HookConsumerWidget {
   const FirstExPage({super.key});
 
   void _onScroll(
-      ScrollController scrollController, ValueNotifier<double> scrollPosition) {
+      ScrollController scrollController,
+      ValueNotifier<double> scrollPosition,
+      ValueNotifier<double?> maxPosition) {
     debugPrint('currentPosition: ${scrollController.position.pixels}');
+
     scrollPosition.value = scrollController.position.pixels;
+    maxPosition.value = scrollController.position.maxScrollExtent;
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final scrollController = useScrollController();
     final scrollPosition = useState<double>(0);
-    final maxScrollExtent = useState<double>(0);
+    final maxPosition = useState<double?>(null);
+    const itemCount = 50;
 
     useEffect(() {
       // final maxHeight = scrollController.position.maxScrollExtent;
       // debugPrint('maxHeight: $maxHeight');
       // WidgetsBinding.instance.addPostFrameCallback((_) {
-      scrollController
-          .addListener(() => _onScroll(scrollController, scrollPosition));
+      scrollController.addListener(
+          () => _onScroll(scrollController, scrollPosition, maxPosition));
       // });
       // scrollController.
       return () {
-        scrollController
-            .removeListener(() => _onScroll(scrollController, scrollPosition));
+        scrollController.removeListener(
+            () => _onScroll(scrollController, scrollPosition, maxPosition));
       };
     }, [scrollController]);
 
@@ -100,20 +105,73 @@ class FirstExPage extends HookConsumerWidget {
           ),
           const SliverToBoxAdapter(child: Gap(8)),
           SliverList.builder(
-            // ListView.builder(
-            // shrinkWrap: true,
-            // controller: scrollController,
             itemBuilder: (context, index) {
-              return Container(
-                height: 50,
+              final currentPos = scrollPosition.value;
+              final maxPos = maxPosition.value;
+              final double? currentIndexRatio;
+              final double? estimatedHeight;
+              if (maxPos != null) {
+                final positionPercentage = currentPos / maxPos;
+                final positionPerItem = maxPos / itemCount;
+                final positionOfTheWidget = positionPerItem * index;
+                debugPrint(
+                  ' positionPercentage: $positionPercentage'
+                  ' indexPerItem: $positionPerItem'
+                  ' currentIndexPerItem: $positionOfTheWidget',
+                );
+                currentIndexRatio = positionOfTheWidget;
+                // 現在のposと、このウィジェットのposの差の絶対値を取る
+                final posDelta = (currentPos - positionOfTheWidget).abs();
+                const ratioCount = 3.0;
+                final baseDiffDelta = ratioCount * positionPerItem;
+                // debugPrint(
+                //   'posDelta: $posDelta'
+                //   ' baseDiffDelta: $baseDiffDelta',
+                // );
+                final delta = posDelta * positionPerItem * 0.01;
+                debugPrint('index: $index delta: $delta');
+                // final sizeRatio = (1 + currentIndexRatio).clamp(1, 1.4);
+                double baseSize = 160;
+                estimatedHeight = (baseSize - delta).clamp(baseSize * 0.5, baseSize * 3.0);
+                // estimatedHeight = sizeRatio * baseSize;
+                // サイズは1 widget 50pxとして
+                // final currentIndexSize = k
+              } else {
+                currentIndexRatio = null;
+                estimatedHeight = null;
+              }
+              debugPrint(
+                '[index: $index]'
+                ' estimatedHeight: $estimatedHeight',
+              );
+              // ここで、widgetの配置と自身のindexから出す
+              // final currentWidgetSize =
+              return AnimatedContainer(
+                height: estimatedHeight ?? 50,
                 color: index.isEven ? Colors.amber : Colors.teal,
-                margin: const EdgeInsets.all(8),
-                child: Center(
-                  child: Text('index: $index'),
+                margin: const EdgeInsets.all(4),
+                duration: const Duration(microseconds: 160),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 32,
+                      margin: const EdgeInsets.all(8),
+                      child: const CircleAvatar(
+                        child: ColoredBox(
+                          color: Colors.blueGrey,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Text('index: $index'),
+                      ),
+                    ),
+                  ],
                 ),
               );
             },
-            itemCount: 50,
+            itemCount: itemCount,
           ),
         ],
       ),
