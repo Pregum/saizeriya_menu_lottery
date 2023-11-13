@@ -87,13 +87,39 @@ class FirstExPage extends HookConsumerWidget {
                   ),
                   const Gap(8),
                   Expanded(
-                    child: Slider(
-                      value: scrollPosition.value.clamp(0, max2),
-                      onChanged: null, // こちらでは動かせないようにする。 //(double value) {},
-                      min: 0,
-                      max: max2,
-                    ),
-                  ),
+                      // child: Slider(
+                      //   value: scrollPosition.value.clamp(0, max2),
+                      //   onChanged: null, // こちらでは動かせないようにする。 //(double value) {},
+                      //   min: 0,
+                      //   max: max2,
+                      // ),
+                      child: Stack(
+                    children: [
+                      Positioned(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: 4,
+                            color: Colors.grey[800],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        child: Align(
+                          // alignment: Alignment.center,
+                          alignment: Alignment(
+                              (-1.0 + (scrollPosition.value / max2) * 2)
+                                  .clamp(-1.0, 1.0),
+                              0.0),
+                          child: Container(
+                            height: 4,
+                            color: Colors.grey[200],
+                            width: 16,
+                          ),
+                        ),
+                      )
+                    ],
+                  )),
                 ],
               ),
             ),
@@ -132,7 +158,8 @@ class FirstExPage extends HookConsumerWidget {
                 debugPrint('index: $index delta: $delta');
                 // final sizeRatio = (1 + currentIndexRatio).clamp(1, 1.4);
                 double baseSize = 160;
-                estimatedHeight = (baseSize - delta).clamp(baseSize * 0.5, baseSize * 3.0);
+                estimatedHeight =
+                    (baseSize - delta).clamp(baseSize * 0.5, baseSize * 3.0);
                 // estimatedHeight = sizeRatio * baseSize;
                 // サイズは1 widget 50pxとして
                 // final currentIndexSize = k
