@@ -177,12 +177,14 @@ class FirstExPage extends HookConsumerWidget {
                 height: estimatedHeight ?? 50,
                 color: index.isEven ? Colors.amber : Colors.teal,
                 margin: const EdgeInsets.all(4),
-                duration: const Duration(microseconds: 160),
+                duration: const Duration(microseconds: 320),
                 child: Row(
                   children: [
-                    Container(
-                      height: 32,
+                    AnimatedContainer(
+                      height: (estimatedHeight ?? 32) * 0.7,
+                      width: (estimatedHeight ?? 32) * 1.2,
                       margin: const EdgeInsets.all(8),
+                      duration: const Duration(microseconds: 320),
                       child: const CircleAvatar(
                         child: ColoredBox(
                           color: Colors.blueGrey,
