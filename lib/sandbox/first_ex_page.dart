@@ -27,9 +27,10 @@ class FirstExPage extends HookConsumerWidget {
   const FirstExPage({super.key});
 
   void _onScroll(
-      ScrollController scrollController,
-      ValueNotifier<double> scrollPosition,
-      ValueNotifier<double?> maxPosition) {
+    ScrollController scrollController,
+    ValueNotifier<double> scrollPosition,
+    ValueNotifier<double?> maxPosition,
+  ) {
     debugPrint('currentPosition: ${scrollController.position.pixels}');
 
     scrollPosition.value = scrollController.position.pixels;
@@ -44,13 +45,8 @@ class FirstExPage extends HookConsumerWidget {
     const itemCount = 50;
 
     useEffect(() {
-      // final maxHeight = scrollController.position.maxScrollExtent;
-      // debugPrint('maxHeight: $maxHeight');
-      // WidgetsBinding.instance.addPostFrameCallback((_) {
       scrollController.addListener(
           () => _onScroll(scrollController, scrollPosition, maxPosition));
-      // });
-      // scrollController.
       return () {
         scrollController.removeListener(
             () => _onScroll(scrollController, scrollPosition, maxPosition));
@@ -87,12 +83,6 @@ class FirstExPage extends HookConsumerWidget {
                   ),
                   const Gap(8),
                   Expanded(
-                      // child: Slider(
-                      //   value: scrollPosition.value.clamp(0, max2),
-                      //   onChanged: null, // こちらでは動かせないようにする。 //(double value) {},
-                      //   min: 0,
-                      //   max: max2,
-                      // ),
                       child: Stack(
                     children: [
                       Positioned(
@@ -132,57 +122,17 @@ class FirstExPage extends HookConsumerWidget {
           const SliverToBoxAdapter(child: Gap(8)),
           SliverList.builder(
             itemBuilder: (context, index) {
-              final currentPos = scrollPosition.value;
-              final maxPos = maxPosition.value;
-              final double? currentIndexRatio;
-              final double? estimatedHeight;
-              if (maxPos != null) {
-                final positionPercentage = currentPos / maxPos;
-                final positionPerItem = maxPos / itemCount;
-                final positionOfTheWidget = positionPerItem * index;
-                debugPrint(
-                  ' positionPercentage: $positionPercentage'
-                  ' indexPerItem: $positionPerItem'
-                  ' currentIndexPerItem: $positionOfTheWidget',
-                );
-                currentIndexRatio = positionOfTheWidget;
-                // 現在のposと、このウィジェットのposの差の絶対値を取る
-                final posDelta = (currentPos - positionOfTheWidget).abs();
-                const ratioCount = 3.0;
-                final baseDiffDelta = ratioCount * positionPerItem;
-                // debugPrint(
-                //   'posDelta: $posDelta'
-                //   ' baseDiffDelta: $baseDiffDelta',
-                // );
-                final delta = posDelta * positionPerItem * 0.01;
-                debugPrint('index: $index delta: $delta');
-                // final sizeRatio = (1 + currentIndexRatio).clamp(1, 1.4);
-                double baseSize = 160;
-                estimatedHeight =
-                    (baseSize - delta).clamp(baseSize * 0.5, baseSize * 3.0);
-                // estimatedHeight = sizeRatio * baseSize;
-                // サイズは1 widget 50pxとして
-                // final currentIndexSize = k
-              } else {
-                currentIndexRatio = null;
-                estimatedHeight = null;
-              }
-              debugPrint(
-                '[index: $index]'
-                ' estimatedHeight: $estimatedHeight',
-              );
-              // ここで、widgetの配置と自身のindexから出す
-              // final currentWidgetSize =
               return AnimatedContainer(
-                height: estimatedHeight ?? 50,
+                // height: 50,
                 color: index.isEven ? Colors.amber : Colors.teal,
                 margin: const EdgeInsets.all(4),
+                padding: const EdgeInsets.all(8),
                 duration: const Duration(microseconds: 320),
                 child: Row(
                   children: [
                     AnimatedContainer(
-                      height: (estimatedHeight ?? 32) * 0.7,
-                      width: (estimatedHeight ?? 32) * 1.2,
+                      height: 64,
+                      width: 64,
                       margin: const EdgeInsets.all(8),
                       duration: const Duration(microseconds: 320),
                       child: const CircleAvatar(
