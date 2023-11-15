@@ -56,17 +56,20 @@ class FirstExPage extends HookConsumerWidget {
     double max2 = scrollController.positions.isNotEmpty
         ? scrollController.position.maxScrollExtent
         : 100;
+    debugPrint(((scrollPosition.value / max2) * 2).toString());
     return Scaffold(
       appBar: AppBar(
-          title: const Text('menu'),
-          leading: IconButton(
-            icon: const Icon(
-              Icons.menu,
-            ),
-            onPressed: () {
-              // TODO: Drawer入れる
-            },
-          )),
+        title: const Text('menu'),
+        leading: IconButton(
+          icon: const Icon(
+            Icons.menu,
+          ),
+          onPressed: () {
+            // TODO: Drawer入れる
+            // scaffoldKey.currentState!.openDrawer();
+          },
+        ),
+      ),
       body: CustomScrollView(
         controller: scrollController,
         slivers: [
@@ -122,19 +125,16 @@ class FirstExPage extends HookConsumerWidget {
           const SliverToBoxAdapter(child: Gap(8)),
           SliverList.builder(
             itemBuilder: (context, index) {
-              return AnimatedContainer(
-                // height: 50,
+              return Container(
                 color: index.isEven ? Colors.amber : Colors.teal,
                 margin: const EdgeInsets.all(4),
                 padding: const EdgeInsets.all(8),
-                duration: const Duration(microseconds: 320),
                 child: Row(
                   children: [
-                    AnimatedContainer(
+                    Container(
                       height: 64,
                       width: 64,
                       margin: const EdgeInsets.all(8),
-                      duration: const Duration(microseconds: 320),
                       child: const CircleAvatar(
                         child: ColoredBox(
                           color: Colors.blueGrey,
