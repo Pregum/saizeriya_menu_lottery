@@ -52,13 +52,45 @@ class DashBoardPage extends HookWidget {
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
                     children: [
-                      Flexible(
-                          flex: 1,
-                          child: Container(
-                              color: Colors.red,
-                              margin: const EdgeInsets.all(8))),
-                      const Gap(32),
-                      Flexible(
+                      Expanded(
+                        flex: 1,
+                        child: LayoutBuilder(builder: (context, constraints) {
+                          return Container(
+                            color: Colors.red,
+                            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  right: constraints.maxWidth / 3,
+                                  top: 10,
+                                  height: constraints.maxHeight,
+                                  child: Text('8',
+                                      style: TextStyle(
+                                          fontSize: constraints.maxHeight / 2)),
+                                ),
+                                Positioned(
+                                  top: constraints.maxHeight / 8,
+                                  right: constraints.maxWidth / 6,
+                                  height: constraints.maxHeight,
+                                  child: Text('2',
+                                      style: TextStyle(
+                                          fontSize: constraints.maxHeight / 3.5)),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        child: VerticalDivider(),
+                      ),
+                      const Gap(24),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16.0),
+                        child: VerticalDivider(),
+                      ),
+                      Expanded(
                           flex: 1,
                           child: Container(
                             color: Colors.tealAccent,
@@ -173,10 +205,13 @@ class DashBoardPage extends HookWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(items: [
-        BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: 'grand menu'),
-        BottomNavigationBarItem(icon: Icon(Icons.map), label: '店舗一覧'),
-      ],),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.menu_book), label: 'grand menu'),
+          BottomNavigationBarItem(icon: Icon(Icons.map), label: '店舗一覧'),
+        ],
+      ),
       // bottomNavigationBar: const PersistentBottomNavBar(
       //   navBarStyle: NavBarStyle.style9,
       // ),
