@@ -19,6 +19,15 @@
       ]
     },
     {
+      "name": "run dash_board_page",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "-t",
+        "lib/sandbox/dash_board_page.dart"
+      ]
+    },
+    {
       "name": "saizeriya_menu_lottery (profile mode)",
       "request": "launch",
       "type": "dart",
