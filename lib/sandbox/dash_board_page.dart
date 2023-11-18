@@ -12,6 +12,7 @@ import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:saizeriya_menu_lottery/sandbox/dummy_data.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 Future<void> main() async {
   await runZonedGuarded(
@@ -61,20 +62,21 @@ class RootPage extends StatelessWidget {
         //   Theme.of(context).textTheme
         // )
       ),
-      home: const DashBoardPage(),
+      home: DashBoardPage(),
     );
   }
 }
 
 class DashBoardPage extends HookConsumerWidget {
-  const DashBoardPage({super.key});
+  DashBoardPage({super.key});
+  final itemController = ItemScrollController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: 向き先をDBに差し替える
-    final dummyMenus = ref.watch(dummyData(20));
+    // final dummyMenus = ref.watch(dummyData(20));
     final selectedMenuIndex = useState<int?>(null);
-    final scrollController = useScrollController();
+    // final scrollController = useScrollController();
     // final asyncMenus = ref.watch(fetchAllMenusProvider);
     final asyncMenus = ref.watch(fetchAllMenusProvider);
 
@@ -167,8 +169,10 @@ class DashBoardPage extends HookConsumerWidget {
                           margin: const EdgeInsets.all(8),
                           child: asyncMenus.when(
                               data: (menus) {
-                                return ListView.separated(
-                                  controller: scrollController,
+                                return ScrollablePositionedList.separated(
+                                  // return ListView.separated(
+                                  // controller: scrollController,
+                                  itemScrollController: itemController,
                                   itemBuilder: (context, index) {
                                     // final menu = dummyMenus[index];
                                     final menu = menus[index];
@@ -443,11 +447,12 @@ class DashBoardPage extends HookConsumerWidget {
                                             selectedMenuIndex.value =
                                                 selectedMenuIndex.value! - 1;
                                             // final offset = Offset();
-                                            scrollController.animateTo(
-                                                selectedMenuIndex.value! * 16,
-                                                duration: const Duration(
-                                                    milliseconds: 750),
-                                                curve: Curves.easeIn);
+                                            itemController.scrollTo(
+                                              index: selectedMenuIndex.value!,
+                                              duration: const Duration(
+                                                  milliseconds: 150),
+                                              alignment: 0.2,
+                                            );
                                           }
                                         },
                                         child: const Column(
@@ -518,12 +523,18 @@ class DashBoardPage extends HookConsumerWidget {
                                             selectedMenuIndex.value =
                                                 selectedMenuIndex.value! + 1;
 
-                                            // TODO: おそらくValueKeyなどを持たせて対象のwidgetのpositionを取得するコードを実装する必要がありそう
-                                            scrollController.animateTo(
-                                                selectedMenuIndex.value! * 16,
-                                                duration: const Duration(
-                                                    milliseconds: 750),
-                                                curve: Curves.easeIn);
+                                            itemController.scrollTo(
+                                              index: selectedMenuIndex.value!,
+                                              duration: const Duration(
+                                                  milliseconds: 150),
+                                              alignment: 0.2,
+                                            );
+                                            // // TODO: おそらくValueKeyなどを持たせて対象のwidgetのpositionを取得するコードを実装する必要がありそう
+                                            // scrollController.animateTo(
+                                            //     selectedMenuIndex.value! * 16,
+                                            //     duration: const Duration(
+                                            //         milliseconds: 750),
+                                            //     curve: Curves.easeIn);
                                           }
                                         },
                                         child: const Column(
