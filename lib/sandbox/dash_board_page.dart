@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
 import 'package:saizeriya_menu_lottery/sandbox/dummy_data.dart';
 
 void main() {
@@ -79,13 +80,31 @@ class DashBoardPage extends HookConsumerWidget {
                                           fontSize: constraints.maxHeight / 2)),
                                 ),
                                 Positioned(
-                                  top: constraints.maxHeight / 8,
-                                  right: constraints.maxWidth / 6,
+                                  top: constraints.maxHeight / 9,
+                                  right: constraints.maxWidth / 8,
                                   height: constraints.maxHeight,
                                   child: Text('2',
                                       style: TextStyle(
                                           fontSize:
-                                              constraints.maxHeight / 3.5)),
+                                              constraints.maxHeight / 3)),
+                                ),
+                                Positioned(
+                                  top: constraints.maxHeight * 2 / 3,
+                                  left: constraints.maxWidth / 6,
+                                  child: Text(
+                                    'menus',
+                                    style: TextStyle(
+                                        fontSize: constraints.maxHeight / 12),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: constraints.maxHeight * 2.25 / 3,
+                                  left: constraints.maxWidth / 6,
+                                  child: Text(
+                                    'restaurant',
+                                    style: TextStyle(
+                                        fontSize: constraints.maxHeight / 12),
+                                  ),
                                 ),
                               ],
                             ),
@@ -154,26 +173,37 @@ class DashBoardPage extends HookConsumerWidget {
                     borderRadius: BorderRadius.circular(4),
                     color: Colors.blue,
                   ),
-                  child: Row(children: [
-                    Flexible(
+                  child: Row(
+                    children: [
+                      Expanded(
                         flex: 1,
                         child: Container(
                             color: Colors.lightBlueAccent,
-                            margin: const EdgeInsets.all(8))),
-                    Container(
-                      width: 8,
-                      padding: const EdgeInsets.symmetric(vertical: 8),
-                      child: const VerticalDivider(
-                        color: Colors.grey,
-                        thickness: 4,
+                            margin: const EdgeInsets.all(8),
+                            child: Assets.images.dummyImage.image()),
                       ),
-                    ),
-                    Flexible(
+                      Container(
+                        width: 8,
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: const VerticalDivider(
+                          color: Colors.grey,
+                          thickness: 4,
+                        ),
+                      ),
+                      Expanded(
                         flex: 1,
                         child: Container(
-                            color: Colors.tealAccent,
-                            margin: const EdgeInsets.all(8))),
-                  ]),
+                          color: Colors.tealAccent,
+                          margin: const EdgeInsets.all(8),
+                          child: const Text(
+                            'ここに料理のフレーバーテキストが入ります',
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 5,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Flexible(
