@@ -36,6 +36,7 @@ class DashBoardPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // TODO: 向き先をDBに差し替える
     final dummyMenus = ref.watch(dummyData(20));
     final selectedMenuIndex = useState<int?>(null);
     final scrollController = useScrollController();
@@ -43,7 +44,7 @@ class DashBoardPage extends HookConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          color: Colors.amber,
+          // color: Colors.amber,
           child: Column(
             children: [
               SizedBox(
@@ -51,7 +52,7 @@ class DashBoardPage extends HookConsumerWidget {
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                    padding: const EdgeInsets.only(left: 16.0, top: 8.0),
                     child: Text('Grand Menu',
                         style: Theme.of(context)
                             .textTheme
@@ -63,7 +64,7 @@ class DashBoardPage extends HookConsumerWidget {
               Flexible(
                 flex: 2,
                 child: Container(
-                  color: Colors.green,
+                  // color: Colors.green,
                   margin: const EdgeInsets.all(8),
                   child: Row(
                     mainAxisSize: MainAxisSize.max,
@@ -72,7 +73,7 @@ class DashBoardPage extends HookConsumerWidget {
                         flex: 1,
                         child: LayoutBuilder(builder: (context, constraints) {
                           return Container(
-                            color: Colors.red,
+                            // color: Colors.red,
                             margin: const EdgeInsets.symmetric(
                                 vertical: 8, horizontal: 12),
                             child: Stack(
@@ -128,7 +129,7 @@ class DashBoardPage extends HookConsumerWidget {
                       Expanded(
                         flex: 1,
                         child: Container(
-                          color: Colors.tealAccent,
+                          // color: Colors.tealAccent,
                           margin: const EdgeInsets.all(8),
                           child: ListView.separated(
                             controller: scrollController,
@@ -193,7 +194,7 @@ class DashBoardPage extends HookConsumerWidget {
                   margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
-                    color: Colors.blue,
+                    // color: Colors.blue,
                   ),
                   child: Row(
                     children: [
@@ -203,8 +204,10 @@ class DashBoardPage extends HookConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
-                              color: Colors.lightBlueAccent,
+                              // color: Colors.lightBlueAccent,
                               margin: const EdgeInsets.all(8),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
                               child: Assets.images.dummyImage.image(),
                             ),
                             selectedMenuIndex.value != null
@@ -228,14 +231,14 @@ class DashBoardPage extends HookConsumerWidget {
                         width: 8,
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const VerticalDivider(
-                          color: Colors.grey,
+                          // color: Colors.grey,
                           thickness: 2.5,
                         ),
                       ),
                       Expanded(
                         flex: 1,
                         child: Container(
-                          color: Colors.tealAccent,
+                          // color: Colors.tealAccent,
                           margin: const EdgeInsets.all(8),
                           child: selectedMenuIndex.value != null
                               ? Column(
@@ -300,7 +303,7 @@ class DashBoardPage extends HookConsumerWidget {
                           children: [
                             Container(
                               height: 24,
-                              // margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                              margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
                               child: Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Text(
@@ -314,7 +317,7 @@ class DashBoardPage extends HookConsumerWidget {
                               flex: 1,
                               child: Container(
                                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-                                color: Colors.green,
+                                // color: Colors.green,
                                 child: Row(children: [
                                   Expanded(
                                     flex: 1,
@@ -323,7 +326,8 @@ class DashBoardPage extends HookConsumerWidget {
                                           vertical: 4),
                                       margin: const EdgeInsets.all(8),
                                       child: Material(
-                                        color: Colors.lightBlue,
+                                        // color: Colors.lightBlue,
+                                        elevation: 2,
                                         borderRadius: BorderRadius.circular(8),
                                         child: InkWell(
                                           onTap: () {
@@ -366,7 +370,8 @@ class DashBoardPage extends HookConsumerWidget {
                                           vertical: 4),
                                       margin: const EdgeInsets.all(8),
                                       child: Material(
-                                        color: Colors.lightBlue,
+                                        // color: Colors.lightBlue,
+                                        elevation: 2,
                                         borderRadius: BorderRadius.circular(8),
                                         child: InkWell(
                                           onTap: () {},
@@ -390,7 +395,8 @@ class DashBoardPage extends HookConsumerWidget {
                                           vertical: 4),
                                       margin: const EdgeInsets.all(8),
                                       child: Material(
-                                        color: Colors.lightBlue,
+                                        // color: Colors.lightBlue,
+                                        elevation: 2,
                                         borderRadius: BorderRadius.circular(8),
                                         child: InkWell(
                                           onTap: () {
