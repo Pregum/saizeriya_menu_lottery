@@ -38,6 +38,7 @@ class DashBoardPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final dummyMenus = ref.watch(dummyData(20));
     final selectedMenuIndex = useState<int?>(null);
+    final scrollController = useScrollController();
 
     return Scaffold(
       body: SafeArea(
@@ -130,6 +131,7 @@ class DashBoardPage extends HookConsumerWidget {
                           color: Colors.tealAccent,
                           margin: const EdgeInsets.all(8),
                           child: ListView.separated(
+                            controller: scrollController,
                             itemBuilder: (context, index) {
                               // return Container(alignment: Alignment.center, child: Text('menu $index'));
                               final menu = dummyMenus[index];
@@ -294,68 +296,154 @@ class DashBoardPage extends HookConsumerWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: Card(
-                          elevation: 4,
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 24,
-                                margin: const EdgeInsets.only(left: 16),
-                                child: const Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    'campaign',
-                                  ),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 24,
+                              // margin: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: Text(
+                                  '操作',
+                                  style:
+                                      Theme.of(context).textTheme.titleLarge,
                                 ),
                               ),
-                              Flexible(
-                                  flex: 1,
-                                  child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 4),
-                                      color: Colors.green)),
-                              Flexible(
-                                  flex: 1,
-                                  child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 4, horizontal: 16),
-                                      color: Colors.blue)),
-                            ],
-                          ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                margin: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                                color: Colors.green,
+                                child: Row(children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      margin: const EdgeInsets.all(8),
+                                      child: Material(
+                                        color: Colors.lightBlue,
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: InkWell(
+                                          onTap: () {
+                                            final hasNextMenu =
+                                                selectedMenuIndex.value !=
+                                                        null &&
+                                                    0 <=
+                                                        (selectedMenuIndex
+                                                                .value! -
+                                                            1);
+
+                                            if (hasNextMenu) {
+                                              selectedMenuIndex.value =
+                                                  selectedMenuIndex.value! - 1;
+                                              // final offset = Offset();
+                                              scrollController.animateTo(
+                                                  selectedMenuIndex.value! * 16,
+                                                  duration: const Duration(
+                                                      milliseconds: 750),
+                                                  curve: Curves.easeIn);
+                                            }
+                                          },
+                                          child: const Column(
+                                            children: [
+                                              Expanded(
+                                                child: Icon(
+                                                    Icons.arrow_circle_left),
+                                              ),
+                                              Text('前のメニューへ'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      margin: const EdgeInsets.all(8),
+                                      child: Material(
+                                        color: Colors.lightBlue,
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: InkWell(
+                                          onTap: () {},
+                                          child: const Column(
+                                            children: [
+                                              Expanded(
+                                                child: Icon(
+                                                    Icons.add_shopping_cart),
+                                              ),
+                                              Text('カートに追加'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4),
+                                      margin: const EdgeInsets.all(8),
+                                      child: Material(
+                                        color: Colors.lightBlue,
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: InkWell(
+                                          onTap: () {
+                                            final hasNextMenu =
+                                                selectedMenuIndex.value !=
+                                                        null &&
+                                                    (selectedMenuIndex.value! +
+                                                            1) <
+                                                        dummyMenus.length;
+                                            if (hasNextMenu) {
+                                              selectedMenuIndex.value =
+                                                  selectedMenuIndex.value! + 1;
+
+                                              // TODO: おそらくValueKeyなどを持たせて対象のwidgetのpositionを取得するコードを実装する必要がありそう
+                                              scrollController.animateTo(
+                                                  selectedMenuIndex.value! * 16,
+                                                  duration: const Duration(
+                                                      milliseconds: 750),
+                                                  curve: Curves.easeIn);
+                                            }
+                                          },
+                                          child: const Column(
+                                            children: [
+                                              Expanded(
+                                                // child: ColoredBox(
+                                                //     color: Colors.red)),
+                                                child: Icon(
+                                                    Icons.arrow_circle_right),
+                                              ),
+                                              Text('次のメニューへ'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ]),
+                              ),
+                            ),
+                            // Flexible(
+                            //   flex: 1,
+                            //   child: Container(
+                            //       margin: const EdgeInsets.symmetric(
+                            //           vertical: 4, horizontal: 16),
+                            //       color: Colors.blue),
+                            // ),
+                          ],
                         ),
-                      ),
-                      Expanded(
-                        child: Card(
-                            elevation: 4,
-                            child: Column(children: [
-                              Container(
-                                  height: 24,
-                                  margin: const EdgeInsets.only(left: 16),
-                                  child: const Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text('this dummy text'))),
-                              Flexible(
-                                  flex: 1,
-                                  child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 4),
-                                      color: Colors.green)),
-                              Flexible(
-                                  flex: 1,
-                                  child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 4, horizontal: 16),
-                                      color: Colors.blue)),
-                            ])),
                       ),
                     ],
                   ),
                 ),
               ),
-              // Flexible(
-              //     flex: 2,
-              //     child: Container(
-              //         color: Colors.grey, margin: const EdgeInsets.all(8))),
             ],
           ),
         ),
