@@ -2,9 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:saizeriya_menu_lottery/sandbox/dummy_data.dart';
 
 void main() {
-  runApp(const RootPage());
+  runApp(const ProviderScope(child: RootPage()));
 }
 
 class RootPage extends StatelessWidget {
@@ -16,17 +19,23 @@ class RootPage extends StatelessWidget {
       theme: ThemeData(
         colorSchemeSeed: Colors.teal,
         useMaterial3: true,
+        textTheme:
+            GoogleFonts.sawarabiMinchoTextTheme(Theme.of(context).textTheme),
+        // GoogleFonts.bizUDPGothicTextTheme(
+        //   Theme.of(context).textTheme
+        // )
       ),
       home: const DashBoardPage(),
     );
   }
 }
 
-class DashBoardPage extends HookWidget {
+class DashBoardPage extends HookConsumerWidget {
   const DashBoardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final dummyMenus = ref.watch(dummyData(20));
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -57,7 +66,8 @@ class DashBoardPage extends HookWidget {
                         child: LayoutBuilder(builder: (context, constraints) {
                           return Container(
                             color: Colors.red,
-                            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            margin: const EdgeInsets.symmetric(
+                                vertical: 8, horizontal: 12),
                             child: Stack(
                               children: [
                                 Positioned(
@@ -74,7 +84,8 @@ class DashBoardPage extends HookWidget {
                                   height: constraints.maxHeight,
                                   child: Text('2',
                                       style: TextStyle(
-                                          fontSize: constraints.maxHeight / 3.5)),
+                                          fontSize:
+                                              constraints.maxHeight / 3.5)),
                                 ),
                               ],
                             ),
@@ -91,18 +102,45 @@ class DashBoardPage extends HookWidget {
                         child: VerticalDivider(),
                       ),
                       Expanded(
-                          flex: 1,
-                          child: Container(
-                            color: Colors.tealAccent,
-                            margin: const EdgeInsets.all(8),
-                            child:
-                                ListView.builder(itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: const Text('適当なメニュー'),
-                                trailing: Text(index.toString()),
+                        flex: 1,
+                        child: Container(
+                          color: Colors.tealAccent,
+                          margin: const EdgeInsets.all(8),
+                          child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              // return Container(alignment: Alignment.center, child: Text('menu $index'));
+                              final menu = dummyMenus[index];
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8.0),
+                                    child: Text('$menu '),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 8.0),
+                                    child: Text('$index'),
+                                  ),
+                                ],
                               );
-                            }),
-                          )),
+                            },
+                            itemCount: dummyMenus.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              if (index % 5 == 0) {
+                                return const Divider(
+                                  indent: 5,
+                                  thickness: 1.5,
+                                  endIndent: 15,
+                                );
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            },
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -206,7 +244,7 @@ class DashBoardPage extends HookWidget {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: [
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.menu_book), label: 'grand menu'),
           BottomNavigationBarItem(icon: Icon(Icons.map), label: '店舗一覧'),
