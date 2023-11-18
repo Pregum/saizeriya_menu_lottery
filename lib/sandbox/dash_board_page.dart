@@ -197,10 +197,30 @@ class DashBoardPage extends HookConsumerWidget {
                     children: [
                       Expanded(
                         flex: 1,
-                        child: Container(
-                            color: Colors.lightBlueAccent,
-                            margin: const EdgeInsets.all(8),
-                            child: Assets.images.dummyImage.image()),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              color: Colors.lightBlueAccent,
+                              margin: const EdgeInsets.all(8),
+                              child: Assets.images.dummyImage.image(),
+                            ),
+                            selectedMenuIndex.value != null
+                                ? Container(
+                                    alignment: Alignment.centerRight,
+                                    height: 25,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Text(
+                                      '1280 yen',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge,
+                                    ),
+                                  )
+                                : const SizedBox(height: 25),
+                          ],
+                        ),
                       ),
                       Container(
                         width: 8,
@@ -224,7 +244,7 @@ class DashBoardPage extends HookConsumerWidget {
                                         dummyMenus[selectedMenuIndex.value!],
                                         style: Theme.of(context)
                                             .textTheme
-                                            .titleMedium,
+                                            .titleLarge,
                                       ),
                                     ),
                                     const Gap(8),
@@ -242,17 +262,20 @@ class DashBoardPage extends HookConsumerWidget {
                                         '含まれる特定原材料',
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyMedium,
+                                            .titleMedium,
                                       ),
                                     ),
                                     const Gap(8),
-                                    Wrap(children: [
-                                      Assets.images.buckwheatBBlk
-                                          .image(width: 32),
-                                      Assets.images.eggBBlk.image(width: 32),
-                                      Assets.images.crabBBlk.image(width: 32),
-                                      Assets.images.shrimpBBlk.image(width: 32),
-                                    ],),
+                                    Wrap(
+                                      children: [
+                                        Assets.images.buckwheatBBlk
+                                            .image(width: 32),
+                                        Assets.images.eggBBlk.image(width: 32),
+                                        Assets.images.crabBBlk.image(width: 32),
+                                        Assets.images.shrimpBBlk
+                                            .image(width: 32),
+                                      ],
+                                    ),
                                   ],
                                 )
                               : const Center(
@@ -272,8 +295,9 @@ class DashBoardPage extends HookConsumerWidget {
                     children: [
                       Expanded(
                         child: Card(
-                            elevation: 4,
-                            child: Column(children: [
+                          elevation: 4,
+                          child: Column(
+                            children: [
                               Container(
                                 height: 24,
                                 margin: const EdgeInsets.only(left: 16),
@@ -296,7 +320,9 @@ class DashBoardPage extends HookConsumerWidget {
                                       margin: const EdgeInsets.symmetric(
                                           vertical: 4, horizontal: 16),
                                       color: Colors.blue)),
-                            ])),
+                            ],
+                          ),
+                        ),
                       ),
                       Expanded(
                         child: Card(
