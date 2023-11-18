@@ -14,6 +14,8 @@ class Menu with _$Menu {
     @Default(null) @JsonKey(name: 'created_at') DateTime? createdAt,
     @JsonKey(name: 'updated_at') DateTime? updatedAt,
     @Default('') @JsonKey(name: 'image_url') String imageUrl,
+    @Default(null) String? description,
+    @Default(null) @JsonKey(name: 'order_code') String? orderCode,
   }) = _Menu;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);

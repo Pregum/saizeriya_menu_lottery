@@ -17,6 +17,8 @@ _$MenuImpl _$$MenuImplFromJson(Map<String, dynamic> json) => _$MenuImpl(
           ? null
           : DateTime.parse(json['updated_at'] as String),
       imageUrl: json['image_url'] as String? ?? '',
+      description: json['description'] as String? ?? null,
+      orderCode: json['order_code'] as String? ?? null,
     );
 
 Map<String, dynamic> _$$MenuImplToJson(_$MenuImpl instance) =>
@@ -27,4 +29,6 @@ Map<String, dynamic> _$$MenuImplToJson(_$MenuImpl instance) =>
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'image_url': instance.imageUrl,
+      'description': instance.description,
+      'order_code': instance.orderCode,
     };
