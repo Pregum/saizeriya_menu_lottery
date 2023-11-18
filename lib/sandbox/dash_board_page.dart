@@ -37,6 +37,8 @@ class DashBoardPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final dummyMenus = ref.watch(dummyData(20));
+    final selectedMenuIndex = useState<int?>(null);
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -44,18 +46,21 @@ class DashBoardPage extends HookConsumerWidget {
           child: Column(
             children: [
               SizedBox(
-                height: 40,
+                // height: 30,
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text('Dashboard',
-                        style: Theme.of(context).textTheme.headlineSmall),
+                    padding: const EdgeInsets.only(left: 8.0, top: 8.0),
+                    child: Text('Grand Menu',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontSize: 24)),
                   ),
                 ),
               ),
               Flexible(
-                flex: 3,
+                flex: 2,
                 child: Container(
                   color: Colors.green,
                   margin: const EdgeInsets.all(8),
@@ -85,14 +90,13 @@ class DashBoardPage extends HookConsumerWidget {
                                   height: constraints.maxHeight,
                                   child: Text('2',
                                       style: TextStyle(
-                                          fontSize:
-                                              constraints.maxHeight / 3)),
+                                          fontSize: constraints.maxHeight / 3)),
                                 ),
                                 Positioned(
                                   top: constraints.maxHeight * 2 / 3,
                                   left: constraints.maxWidth / 6,
                                   child: Text(
-                                    'menus',
+                                    '',
                                     style: TextStyle(
                                         fontSize: constraints.maxHeight / 12),
                                   ),
@@ -101,7 +105,7 @@ class DashBoardPage extends HookConsumerWidget {
                                   top: constraints.maxHeight * 2.25 / 3,
                                   left: constraints.maxWidth / 6,
                                   child: Text(
-                                    'restaurant',
+                                    'menus',
                                     style: TextStyle(
                                         fontSize: constraints.maxHeight / 12),
                                   ),
@@ -129,19 +133,35 @@ class DashBoardPage extends HookConsumerWidget {
                             itemBuilder: (context, index) {
                               // return Container(alignment: Alignment.center, child: Text('menu $index'));
                               final menu = dummyMenus[index];
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(left: 8.0),
-                                    child: Text('$menu '),
+                              return Material(
+                                color: selectedMenuIndex.value == index
+                                    ? Colors.amber
+                                    : Colors.transparent,
+                                child: InkWell(
+                                  onTap: () => selectedMenuIndex.value = index,
+                                  // overlayColor: MaterialStatePropertyAll(
+                                  //     selectedMenuIndex.value == index
+                                  //         ? Colors.amber
+                                  //         : Colors.transparent),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 8.0),
+                                        child: Text('$menu '),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 8.0),
+                                        child: Text(
+                                          '$index',
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 8.0),
-                                    child: Text('$index'),
-                                  ),
-                                ],
+                                ),
                               );
                             },
                             itemCount: dummyMenus.length,
@@ -187,7 +207,7 @@ class DashBoardPage extends HookConsumerWidget {
                         padding: const EdgeInsets.symmetric(vertical: 8),
                         child: const VerticalDivider(
                           color: Colors.grey,
-                          thickness: 4,
+                          thickness: 2.5,
                         ),
                       ),
                       Expanded(
@@ -195,11 +215,48 @@ class DashBoardPage extends HookConsumerWidget {
                         child: Container(
                           color: Colors.tealAccent,
                           margin: const EdgeInsets.all(8),
-                          child: const Text(
-                            'ここに料理のフレーバーテキストが入ります',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 5,
-                          ),
+                          child: selectedMenuIndex.value != null
+                              ? Column(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        dummyMenus[selectedMenuIndex.value!],
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium,
+                                      ),
+                                    ),
+                                    const Gap(8),
+                                    Text(
+                                      'ここに料理のフレーバーテキストが入ります',
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 2,
+                                    ),
+                                    const Gap(8),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        '含まれる特定原材料',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                    ),
+                                    const Gap(8),
+                                    Wrap(children: [
+                                      Assets.images.buckwheatBBlk
+                                          .image(width: 32),
+                                      Assets.images.eggBBlk.image(width: 32),
+                                      Assets.images.crabBBlk.image(width: 32),
+                                      Assets.images.shrimpBBlk.image(width: 32),
+                                    ],),
+                                  ],
+                                )
+                              : const Center(
+                                  child: Text('メニューを選択すると、ここに料理の詳細が表示されます。')),
                         ),
                       ),
                     ],
@@ -207,7 +264,7 @@ class DashBoardPage extends HookConsumerWidget {
                 ),
               ),
               Flexible(
-                flex: 3,
+                flex: 1,
                 child: Container(
                   // color: Colors.purple,
                   margin: const EdgeInsets.all(8),
@@ -218,11 +275,15 @@ class DashBoardPage extends HookConsumerWidget {
                             elevation: 4,
                             child: Column(children: [
                               Container(
-                                  height: 24,
-                                  margin: const EdgeInsets.only(left: 16),
-                                  child: const Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Text('this dummy text'))),
+                                height: 24,
+                                margin: const EdgeInsets.only(left: 16),
+                                child: const Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Text(
+                                    'campaign',
+                                  ),
+                                ),
+                              ),
                               Flexible(
                                   flex: 1,
                                   child: Container(
