@@ -174,7 +174,7 @@ class DashBoardPage extends HookConsumerWidget {
                                     final menu = menus[index];
                                     return Material(
                                       color: selectedMenuIndex.value == index
-                                          ? Colors.amber
+                                          ? Colors.tealAccent
                                           : Colors.transparent,
                                       child: InkWell(
                                         onTap: () =>
@@ -189,20 +189,17 @@ class DashBoardPage extends HookConsumerWidget {
                                               child: AutoSizeText(
                                                 '${menu.name}',
                                                 maxLines: 2,
-                                                overflow:
-                                                    TextOverflow.ellipsis,
+                                                overflow: TextOverflow.ellipsis,
                                                 minFontSize: 10,
                                               ),
                                             ),
                                             const Gap(8),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      right: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  right: 4.0),
                                               child: AutoSizeText(
                                                 '$index',
-                                                overflow:
-                                                    TextOverflow.ellipsis,
+                                                overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
@@ -251,31 +248,64 @@ class DashBoardPage extends HookConsumerWidget {
                   children: [
                     Expanded(
                       flex: 1,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            // color: Colors.lightBlueAccent,
-                            margin: const EdgeInsets.all(8),
-                            clipBehavior: Clip.antiAlias,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Assets.images.dummyImage.image(),
-                          ),
-                          selectedMenuIndex.value != null
-                              ? Container(
-                                  alignment: Alignment.centerRight,
-                                  height: 25,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  child: Text(
-                                    '1280 yen',
-                                    style:
-                                        Theme.of(context).textTheme.titleLarge,
-                                  ),
-                                )
-                              : const SizedBox(height: 25),
-                        ],
+                      child: asyncMenus.when(
+                        data: (menus) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              selectedMenuIndex.value != null
+                                  ? Container(
+                                      // color: Colors.lightBlueAccent,
+                                      margin: const EdgeInsets.all(8),
+                                      clipBehavior: Clip.antiAlias,
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8)),
+                                      // child: Assets.images.dummyImage.image(),
+                                      child: Image.network(
+                                          menus[selectedMenuIndex.value!]
+                                              .imageUrl,
+                                          loadingBuilder:
+                                              (context, child, event) {
+                                        if (event != null) {
+                                          return const CircularProgressIndicator
+                                              .adaptive();
+                                        }
+                                        return child;
+                                      }, frameBuilder: (context, child, frame,
+                                              wasSynchronouslyLoaded) {
+                                        if (!wasSynchronouslyLoaded &&
+                                            frame == 0) {
+                                          debugPrint('image was loaded');
+                                        }
+                                        debugPrint(
+                                            'frameBuilder was called: $frame');
+                                        return child;
+                                      }),
+                                    )
+                                  : const SizedBox.shrink(),
+                              selectedMenuIndex.value != null
+                                  ? Container(
+                                      alignment: Alignment.centerRight,
+                                      height: 25,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: Text(
+                                        '${menus[selectedMenuIndex.value!].orderCode} yen',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleLarge,
+                                      ),
+                                    )
+                                  : const SizedBox(height: 25),
+                            ],
+                          );
+                        },
+                        error: (error, stackTrace) {
+                          return const Center(child: Text('oops!'));
+                        },
+                        loading: () =>
+                            const CircularProgressIndicator.adaptive(),
                       ),
                     ),
                     Container(
@@ -289,52 +319,75 @@ class DashBoardPage extends HookConsumerWidget {
                     Expanded(
                       flex: 1,
                       child: Container(
-                        margin: const EdgeInsets.all(8),
-                        child: selectedMenuIndex.value != null
-                            ? Column(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      dummyMenus[selectedMenuIndex.value!],
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleLarge,
-                                    ),
-                                  ),
-                                  const Gap(8),
-                                  Text(
-                                    'ここに料理のフレーバーテキストが入ります',
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                  const Gap(8),
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      '含まれる特定原材料',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium,
-                                    ),
-                                  ),
-                                  const Gap(8),
-                                  Wrap(
-                                    children: [
-                                      Assets.images.buckwheatBBlk
-                                          .image(width: 32),
-                                      Assets.images.eggBBlk.image(width: 32),
-                                      Assets.images.crabBBlk.image(width: 32),
-                                      Assets.images.shrimpBBlk.image(width: 32),
-                                    ],
-                                  ),
-                                ],
-                              )
-                            : const Center(
-                                child: Text('メニューを選択すると、ここに料理の詳細が表示されます。')),
-                      ),
+                          margin: const EdgeInsets.all(8),
+                          child: asyncMenus.when(
+                              data: (menus) {
+                                return selectedMenuIndex.value != null
+                                    ? Column(
+                                        children: [
+                                          Container(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              menus[selectedMenuIndex.value!]
+                                                      .name ??
+                                                  '',
+                                              // dummyMenus[
+                                              //     selectedMenuIndex.value!],
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge,
+                                            ),
+                                          ),
+                                          const Gap(8),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
+                                            child: Text(
+                                              // 'ここに料理のフレーバーテキストが入ります',
+                                              menus[selectedMenuIndex.value!]
+                                                      .description ??
+                                                  'ここに料理のフレーバーテキストが入ります',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          const Gap(8),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              '含まれる特定原材料',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleMedium,
+                                            ),
+                                          ),
+                                          const Gap(8),
+                                          Wrap(
+                                            alignment: WrapAlignment.center,
+                                            children: [
+                                              Assets.images.buckwheatBBlk
+                                                  .image(width: 32),
+                                              Assets.images.eggBBlk
+                                                  .image(width: 32),
+                                              Assets.images.crabBBlk
+                                                  .image(width: 32),
+                                              Assets.images.shrimpBBlk
+                                                  .image(width: 32),
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                    : const Center(
+                                        child: Text(
+                                            'メニューを選択すると、ここに料理の詳細が表示されます。'));
+                              },
+                              error: (error, stackTrace) =>
+                                  const Center(child: Text('oops!')),
+                              loading: () =>
+                                  const CircularProgressIndicator.adaptive())),
                     ),
                   ],
                 ),
@@ -379,14 +432,14 @@ class DashBoardPage extends HookConsumerWidget {
                                       borderRadius: BorderRadius.circular(8),
                                       child: InkWell(
                                         onTap: () {
-                                          final hasNextMenu =
+                                          final hasPreviousMenu =
                                               selectedMenuIndex.value != null &&
                                                   0 <=
                                                       (selectedMenuIndex
                                                               .value! -
                                                           1);
 
-                                          if (hasNextMenu) {
+                                          if (hasPreviousMenu) {
                                             selectedMenuIndex.value =
                                                 selectedMenuIndex.value! - 1;
                                             // final offset = Offset();
@@ -447,11 +500,20 @@ class DashBoardPage extends HookConsumerWidget {
                                       borderRadius: BorderRadius.circular(8),
                                       child: InkWell(
                                         onTap: () {
+                                          final menus = asyncMenus.maybeWhen(
+                                              data: (value) => value,
+                                              loading: () => [],
+                                              orElse: () {
+                                                return [];
+                                              });
+                                          if (menus.isEmpty) {
+                                            return;
+                                          }
                                           final hasNextMenu =
                                               selectedMenuIndex.value != null &&
                                                   (selectedMenuIndex.value! +
                                                           1) <
-                                                      dummyMenus.length;
+                                                      menus.length;
                                           if (hasNextMenu) {
                                             selectedMenuIndex.value =
                                                 selectedMenuIndex.value! + 1;
