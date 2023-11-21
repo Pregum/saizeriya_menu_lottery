@@ -483,10 +483,9 @@ class DashBoardPage extends HookConsumerWidget {
                                         child: const Column(
                                           children: [
                                             Expanded(
-                                              child:
-                                                  Icon(Icons.add_shopping_cart),
+                                              child: Icon(Icons.add_circle),
                                             ),
-                                            Text('カートに追加'),
+                                            Text('オーダーに追加'),
                                           ],
                                         ),
                                       ),
@@ -575,8 +574,17 @@ class DashBoardPage extends HookConsumerWidget {
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book), label: 'grand menu'),
-          BottomNavigationBarItem(icon: Icon(Icons.map), label: '店舗一覧'),
+            icon: Icon(Icons.menu_book),
+            label: 'Grand Menu',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.stars_outlined),
+            label: 'Special Menu',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart_outlined),
+            label: 'Order List',
+          ),
         ],
       ),
       // bottomNavigationBar: const PersistentBottomNavBar(
