@@ -294,11 +294,25 @@ class DashBoardPage extends HookConsumerWidget {
                                       height: 25,
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 8.0),
-                                      child: Text(
-                                        '${menus[selectedMenuIndex.value!].orderCode} yen',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleLarge,
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text:
+                                                  '${menus[selectedMenuIndex.value!].price}円',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleLarge,
+                                            ),
+                                            TextSpan(
+                                              text:
+                                                  '(税込み ${menus[selectedMenuIndex.value!].priceWithTax}円)',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .titleSmall,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     )
                                   : const SizedBox(height: 25),

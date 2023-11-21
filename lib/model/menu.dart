@@ -9,13 +9,15 @@ part 'menu.g.dart';
 class Menu with _$Menu {
   factory Menu({
     required int id,
-    @Default('') String? name,
-    @Default(null) @JsonKey(name: 'food_type_id') int? foodTypeId,
+    @Default('') String name,
+    @JsonKey(name: 'food_type_id') required int foodTypeId,
     @Default(null) @JsonKey(name: 'created_at') DateTime? createdAt,
     @JsonKey(name: 'updated_at') DateTime? updatedAt,
-    @Default('') @JsonKey(name: 'image_url') String imageUrl,
+    @JsonKey(name: 'image_url') required String imageUrl,
     @Default(null) String? description,
-    @Default(null) @JsonKey(name: 'order_code') String? orderCode,
+    @JsonKey(name: 'order_code') required String orderCode,
+    required int price,
+    @JsonKey(name: 'price_with_tax') required int priceWithTax,
   }) = _Menu;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);

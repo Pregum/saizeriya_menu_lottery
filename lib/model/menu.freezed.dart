@@ -21,9 +21,9 @@ Menu _$MenuFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Menu {
   int get id => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   @JsonKey(name: 'food_type_id')
-  int? get foodTypeId => throw _privateConstructorUsedError;
+  int get foodTypeId => throw _privateConstructorUsedError;
   @JsonKey(name: 'created_at')
   DateTime? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'updated_at')
@@ -32,7 +32,10 @@ mixin _$Menu {
   String get imageUrl => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   @JsonKey(name: 'order_code')
-  String? get orderCode => throw _privateConstructorUsedError;
+  String get orderCode => throw _privateConstructorUsedError;
+  int get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'price_with_tax')
+  int get priceWithTax => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -46,13 +49,15 @@ abstract class $MenuCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String? name,
-      @JsonKey(name: 'food_type_id') int? foodTypeId,
+      String name,
+      @JsonKey(name: 'food_type_id') int foodTypeId,
       @JsonKey(name: 'created_at') DateTime? createdAt,
       @JsonKey(name: 'updated_at') DateTime? updatedAt,
       @JsonKey(name: 'image_url') String imageUrl,
       String? description,
-      @JsonKey(name: 'order_code') String? orderCode});
+      @JsonKey(name: 'order_code') String orderCode,
+      int price,
+      @JsonKey(name: 'price_with_tax') int priceWithTax});
 }
 
 /// @nodoc
@@ -69,27 +74,29 @@ class _$MenuCopyWithImpl<$Res, $Val extends Menu>
   @override
   $Res call({
     Object? id = null,
-    Object? name = freezed,
-    Object? foodTypeId = freezed,
+    Object? name = null,
+    Object? foodTypeId = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? imageUrl = null,
     Object? description = freezed,
-    Object? orderCode = freezed,
+    Object? orderCode = null,
+    Object? price = null,
+    Object? priceWithTax = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      name: freezed == name
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      foodTypeId: freezed == foodTypeId
+              as String,
+      foodTypeId: null == foodTypeId
           ? _value.foodTypeId
           : foodTypeId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -106,10 +113,18 @@ class _$MenuCopyWithImpl<$Res, $Val extends Menu>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      orderCode: freezed == orderCode
+      orderCode: null == orderCode
           ? _value.orderCode
           : orderCode // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int,
+      priceWithTax: null == priceWithTax
+          ? _value.priceWithTax
+          : priceWithTax // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -123,13 +138,15 @@ abstract class _$$MenuImplCopyWith<$Res> implements $MenuCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String? name,
-      @JsonKey(name: 'food_type_id') int? foodTypeId,
+      String name,
+      @JsonKey(name: 'food_type_id') int foodTypeId,
       @JsonKey(name: 'created_at') DateTime? createdAt,
       @JsonKey(name: 'updated_at') DateTime? updatedAt,
       @JsonKey(name: 'image_url') String imageUrl,
       String? description,
-      @JsonKey(name: 'order_code') String? orderCode});
+      @JsonKey(name: 'order_code') String orderCode,
+      int price,
+      @JsonKey(name: 'price_with_tax') int priceWithTax});
 }
 
 /// @nodoc
@@ -143,27 +160,29 @@ class __$$MenuImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? name = freezed,
-    Object? foodTypeId = freezed,
+    Object? name = null,
+    Object? foodTypeId = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
     Object? imageUrl = null,
     Object? description = freezed,
-    Object? orderCode = freezed,
+    Object? orderCode = null,
+    Object? price = null,
+    Object? priceWithTax = null,
   }) {
     return _then(_$MenuImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      name: freezed == name
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
-              as String?,
-      foodTypeId: freezed == foodTypeId
+              as String,
+      foodTypeId: null == foodTypeId
           ? _value.foodTypeId
           : foodTypeId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
       createdAt: freezed == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -180,10 +199,18 @@ class __$$MenuImplCopyWithImpl<$Res>
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
               as String?,
-      orderCode: freezed == orderCode
+      orderCode: null == orderCode
           ? _value.orderCode
           : orderCode // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as String,
+      price: null == price
+          ? _value.price
+          : price // ignore: cast_nullable_to_non_nullable
+              as int,
+      priceWithTax: null == priceWithTax
+          ? _value.priceWithTax
+          : priceWithTax // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -194,12 +221,14 @@ class _$MenuImpl implements _Menu {
   _$MenuImpl(
       {required this.id,
       this.name = '',
-      @JsonKey(name: 'food_type_id') this.foodTypeId = null,
+      @JsonKey(name: 'food_type_id') required this.foodTypeId,
       @JsonKey(name: 'created_at') this.createdAt = null,
       @JsonKey(name: 'updated_at') this.updatedAt,
-      @JsonKey(name: 'image_url') this.imageUrl = '',
+      @JsonKey(name: 'image_url') required this.imageUrl,
       this.description = null,
-      @JsonKey(name: 'order_code') this.orderCode = null});
+      @JsonKey(name: 'order_code') required this.orderCode,
+      required this.price,
+      @JsonKey(name: 'price_with_tax') required this.priceWithTax});
 
   factory _$MenuImpl.fromJson(Map<String, dynamic> json) =>
       _$$MenuImplFromJson(json);
@@ -208,10 +237,10 @@ class _$MenuImpl implements _Menu {
   final int id;
   @override
   @JsonKey()
-  final String? name;
+  final String name;
   @override
   @JsonKey(name: 'food_type_id')
-  final int? foodTypeId;
+  final int foodTypeId;
   @override
   @JsonKey(name: 'created_at')
   final DateTime? createdAt;
@@ -226,11 +255,16 @@ class _$MenuImpl implements _Menu {
   final String? description;
   @override
   @JsonKey(name: 'order_code')
-  final String? orderCode;
+  final String orderCode;
+  @override
+  final int price;
+  @override
+  @JsonKey(name: 'price_with_tax')
+  final int priceWithTax;
 
   @override
   String toString() {
-    return 'Menu(id: $id, name: $name, foodTypeId: $foodTypeId, createdAt: $createdAt, updatedAt: $updatedAt, imageUrl: $imageUrl, description: $description, orderCode: $orderCode)';
+    return 'Menu(id: $id, name: $name, foodTypeId: $foodTypeId, createdAt: $createdAt, updatedAt: $updatedAt, imageUrl: $imageUrl, description: $description, orderCode: $orderCode, price: $price, priceWithTax: $priceWithTax)';
   }
 
   @override
@@ -251,13 +285,16 @@ class _$MenuImpl implements _Menu {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.orderCode, orderCode) ||
-                other.orderCode == orderCode));
+                other.orderCode == orderCode) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.priceWithTax, priceWithTax) ||
+                other.priceWithTax == priceWithTax));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, name, foodTypeId, createdAt,
-      updatedAt, imageUrl, description, orderCode);
+      updatedAt, imageUrl, description, orderCode, price, priceWithTax);
 
   @JsonKey(ignore: true)
   @override
@@ -275,24 +312,27 @@ class _$MenuImpl implements _Menu {
 
 abstract class _Menu implements Menu {
   factory _Menu(
-      {required final int id,
-      final String? name,
-      @JsonKey(name: 'food_type_id') final int? foodTypeId,
-      @JsonKey(name: 'created_at') final DateTime? createdAt,
-      @JsonKey(name: 'updated_at') final DateTime? updatedAt,
-      @JsonKey(name: 'image_url') final String imageUrl,
-      final String? description,
-      @JsonKey(name: 'order_code') final String? orderCode}) = _$MenuImpl;
+          {required final int id,
+          final String name,
+          @JsonKey(name: 'food_type_id') required final int foodTypeId,
+          @JsonKey(name: 'created_at') final DateTime? createdAt,
+          @JsonKey(name: 'updated_at') final DateTime? updatedAt,
+          @JsonKey(name: 'image_url') required final String imageUrl,
+          final String? description,
+          @JsonKey(name: 'order_code') required final String orderCode,
+          required final int price,
+          @JsonKey(name: 'price_with_tax') required final int priceWithTax}) =
+      _$MenuImpl;
 
   factory _Menu.fromJson(Map<String, dynamic> json) = _$MenuImpl.fromJson;
 
   @override
   int get id;
   @override
-  String? get name;
+  String get name;
   @override
   @JsonKey(name: 'food_type_id')
-  int? get foodTypeId;
+  int get foodTypeId;
   @override
   @JsonKey(name: 'created_at')
   DateTime? get createdAt;
@@ -306,7 +346,12 @@ abstract class _Menu implements Menu {
   String? get description;
   @override
   @JsonKey(name: 'order_code')
-  String? get orderCode;
+  String get orderCode;
+  @override
+  int get price;
+  @override
+  @JsonKey(name: 'price_with_tax')
+  int get priceWithTax;
   @override
   @JsonKey(ignore: true)
   _$$MenuImplCopyWith<_$MenuImpl> get copyWith =>
