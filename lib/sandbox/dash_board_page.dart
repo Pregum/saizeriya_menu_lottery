@@ -191,7 +191,7 @@ class DashBoardPage extends HookConsumerWidget {
                                             const Gap(8),
                                             Expanded(
                                               child: AutoSizeText(
-                                                '${menu.name}',
+                                                menu.name,
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 minFontSize: 10,
@@ -202,7 +202,7 @@ class DashBoardPage extends HookConsumerWidget {
                                               padding: const EdgeInsets.only(
                                                   right: 4.0),
                                               child: AutoSizeText(
-                                                '$index',
+                                                menu.orderCode,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                             ),
