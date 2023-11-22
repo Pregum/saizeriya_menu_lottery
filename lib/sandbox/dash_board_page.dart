@@ -79,6 +79,8 @@ class DashBoardPage extends HookConsumerWidget {
     // final scrollController = useScrollController();
     // final asyncMenus = ref.watch(fetchAllMenusProvider);
     final asyncMenus = ref.watch(fetchAllMenusProvider);
+    final numOfMenus =
+        asyncMenus.maybeWhen(data: (data) => data.length, orElse: () => 0);
 
     return Scaffold(
       body: SafeArea(
@@ -106,7 +108,8 @@ class DashBoardPage extends HookConsumerWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    const MenusCountWidget(),
+                    // const MenusCountWidget(),
+                    MenuNumWidget(numOfMenus: numOfMenus),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       child: VerticalDivider(),
@@ -215,41 +218,45 @@ class DashBoardPage extends HookConsumerWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Flexible(
-                                    child: selectedMenuIndex.value != null
-                                        ? Container(
-                                            // color: Colors.lightBlueAccent,
-                                            margin: const EdgeInsets.all(8),
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            // child: Assets.images.dummyImage.image(),
-                                            child: Image.network(
-                                              menus[selectedMenuIndex.value!]
-                                                  .imageUrl,
-                                              loadingBuilder:
-                                                  (context, child, event) {
-                                                if (event != null) {
-                                                  return const CircularProgressIndicator
-                                                      .adaptive();
-                                                }
-                                                return child;
-                                              },
-                                              frameBuilder: (context, child,
-                                                  frame, wasSynchronouslyLoaded) {
-                                                if (!wasSynchronouslyLoaded &&
-                                                    frame == 0) {
-                                                  debugPrint('image was loaded');
-                                                }
-                                                debugPrint(
-                                                    'frameBuilder was called: $frame');
-                                                return child;
-                                              },
-                                              fit: BoxFit.contain,
-                                            ),
-                                          )
-                                        : const SizedBox.shrink(),
-                                  ),
+                                      child: selectedMenuIndex.value != null
+                                          ? Container(
+                                              // color: Colors.lightBlueAccent,
+                                              margin: const EdgeInsets.all(8),
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              // child: Assets.images.dummyImage.image(),
+                                              child: Image.network(
+                                                menus[selectedMenuIndex.value!]
+                                                    .imageUrl,
+                                                loadingBuilder:
+                                                    (context, child, event) {
+                                                  if (event != null) {
+                                                    return const CircularProgressIndicator
+                                                        .adaptive();
+                                                  }
+                                                  return child;
+                                                },
+                                                frameBuilder: (context,
+                                                    child,
+                                                    frame,
+                                                    wasSynchronouslyLoaded) {
+                                                  if (!wasSynchronouslyLoaded &&
+                                                      frame == 0) {
+                                                    debugPrint(
+                                                        'image was loaded');
+                                                  }
+                                                  debugPrint(
+                                                      'frameBuilder was called: $frame');
+                                                  return child;
+                                                },
+                                                fit: BoxFit.contain,
+                                              ),
+                                            )
+                                          : const Center(
+                                              child: Text(
+                                                  'メニューを選択すると、ここに料理の画像が表示されます。'))),
                                   selectedMenuIndex.value != null
                                       ? Container(
                                           alignment: Alignment.centerRight,
@@ -572,6 +579,66 @@ class DashBoardPage extends HookConsumerWidget {
   }
 }
 
+class MenuNumWidget extends StatelessWidget {
+  final int? numOfMenus;
+  const MenuNumWidget({super.key, this.numOfMenus});
+
+  @override
+  Widget build(BuildContext context) {
+    final numOfMenusStr = numOfMenus?.toString();
+    final String firstNum;
+    final String secondNum;
+    if ((numOfMenusStr?.length ?? 0) >= 2) {
+      firstNum = numOfMenusStr![0];
+      secondNum = numOfMenusStr.substring(1);
+    } else {
+      firstNum = '';
+      secondNum = '';
+    }
+
+    final largeTheme = Theme.of(context).textTheme.displayLarge;
+    final largeFontSize = largeTheme?.fontSize ?? 0;
+    final smallTheme = Theme.of(context).textTheme.displayMedium;
+    final smallFontSize = smallTheme?.fontSize ?? 0;
+    debugPrint(
+        'large: ${largeTheme?.fontSize ?? -1}, small: ${smallTheme?.fontSize ?? -1}');
+    final deltaFontSize = largeFontSize - smallFontSize;
+    final half = deltaFontSize / 2.0;
+    final quoter = deltaFontSize / 4.0;
+    return Expanded(
+      flex: 1,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 64.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Baseline(
+                baseline: 0, // deltaFontSize * 3,
+                baselineType: TextBaseline.alphabetic,
+                child: Text(firstNum,
+                    style: Theme.of(context).textTheme.displayLarge)),
+            Baseline(
+                baseline: -deltaFontSize + quoter, //-half,
+                baselineType: TextBaseline.alphabetic,
+                child: Text(secondNum,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayLarge
+                        ?.copyWith(fontSize: largeFontSize / 1.5))),
+            const Gap(16),
+            Baseline(
+                baseline: -quoter,
+                baselineType: TextBaseline.alphabetic,
+                child: Text('menus',
+                    style: Theme.of(context).textTheme.displayMedium)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class MenusCountWidget extends StatelessWidget {
   const MenusCountWidget({
     super.key,
@@ -583,33 +650,32 @@ class MenusCountWidget extends StatelessWidget {
       flex: 1,
       child: LayoutBuilder(builder: (context, constraints) {
         return Container(
-          margin: const EdgeInsets.symmetric(
-              vertical: 8, horizontal: 12),
+          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
           child: Stack(
             children: [
               Positioned(
                 right: constraints.maxWidth / 3,
                 top: 10,
                 height: constraints.maxHeight,
-                child: Text('8',
-                    style: TextStyle(
-                        fontSize: constraints.maxHeight / 2)),
+                child: ColoredBox(
+                  color: Colors.teal,
+                  child: Text('8',
+                      style: TextStyle(fontSize: constraints.maxHeight / 2)),
+                ),
               ),
               Positioned(
                 top: constraints.maxHeight / 9,
                 right: constraints.maxWidth / 8,
                 height: constraints.maxHeight,
                 child: Text('2',
-                    style: TextStyle(
-                        fontSize: constraints.maxHeight / 3)),
+                    style: TextStyle(fontSize: constraints.maxHeight / 3)),
               ),
               Positioned(
                 top: constraints.maxHeight * 2 / 3,
                 left: constraints.maxWidth / 6,
                 child: Text(
                   '',
-                  style: TextStyle(
-                      fontSize: constraints.maxHeight / 12),
+                  style: TextStyle(fontSize: constraints.maxHeight / 12),
                 ),
               ),
               Positioned(
@@ -617,8 +683,7 @@ class MenusCountWidget extends StatelessWidget {
                 left: constraints.maxWidth / 6,
                 child: Text(
                   'menus',
-                  style: TextStyle(
-                      fontSize: constraints.maxHeight / 12),
+                  style: TextStyle(fontSize: constraints.maxHeight / 12),
                 ),
               ),
             ],
