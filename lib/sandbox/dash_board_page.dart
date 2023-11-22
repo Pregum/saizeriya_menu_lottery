@@ -106,54 +106,7 @@ class DashBoardPage extends HookConsumerWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: LayoutBuilder(builder: (context, constraints) {
-                        return Container(
-                          // color: Colors.red,
-                          margin: const EdgeInsets.symmetric(
-                              vertical: 8, horizontal: 12),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                right: constraints.maxWidth / 3,
-                                top: 10,
-                                height: constraints.maxHeight,
-                                child: Text('8',
-                                    style: TextStyle(
-                                        fontSize: constraints.maxHeight / 2)),
-                              ),
-                              Positioned(
-                                top: constraints.maxHeight / 9,
-                                right: constraints.maxWidth / 8,
-                                height: constraints.maxHeight,
-                                child: Text('2',
-                                    style: TextStyle(
-                                        fontSize: constraints.maxHeight / 3)),
-                              ),
-                              Positioned(
-                                top: constraints.maxHeight * 2 / 3,
-                                left: constraints.maxWidth / 6,
-                                child: Text(
-                                  '',
-                                  style: TextStyle(
-                                      fontSize: constraints.maxHeight / 12),
-                                ),
-                              ),
-                              Positioned(
-                                top: constraints.maxHeight * 2.25 / 3,
-                                left: constraints.maxWidth / 6,
-                                child: Text(
-                                  'menus',
-                                  style: TextStyle(
-                                      fontSize: constraints.maxHeight / 12),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }),
-                    ),
+                    const MenusCountWidget(),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       child: VerticalDivider(),
@@ -252,78 +205,89 @@ class DashBoardPage extends HookConsumerWidget {
                   children: [
                     Expanded(
                       flex: 1,
-                      child: asyncMenus.when(
-                        data: (menus) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              selectedMenuIndex.value != null
-                                  ? Container(
-                                      // color: Colors.lightBlueAccent,
-                                      margin: const EdgeInsets.all(8),
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(8)),
-                                      // child: Assets.images.dummyImage.image(),
-                                      child: Image.network(
-                                          menus[selectedMenuIndex.value!]
-                                              .imageUrl,
-                                          loadingBuilder:
-                                              (context, child, event) {
-                                        if (event != null) {
-                                          return const CircularProgressIndicator
-                                              .adaptive();
-                                        }
-                                        return child;
-                                      }, frameBuilder: (context, child, frame,
-                                              wasSynchronouslyLoaded) {
-                                        if (!wasSynchronouslyLoaded &&
-                                            frame == 0) {
-                                          debugPrint('image was loaded');
-                                        }
-                                        debugPrint(
-                                            'frameBuilder was called: $frame');
-                                        return child;
-                                      }),
-                                    )
-                                  : const SizedBox.shrink(),
-                              selectedMenuIndex.value != null
-                                  ? Container(
-                                      alignment: Alignment.centerRight,
-                                      height: 25,
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 8.0),
-                                      child: Text.rich(
-                                        TextSpan(
-                                          children: [
-                                            TextSpan(
-                                              text:
-                                                  '${menus[selectedMenuIndex.value!].price}円',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleLarge,
+                      child: LayoutBuilder(
+                        builder:
+                            (BuildContext context, BoxConstraints constraints) {
+                          return asyncMenus.when(
+                            data: (menus) {
+                              return Column(
+                                // mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: selectedMenuIndex.value != null
+                                        ? Container(
+                                            // color: Colors.lightBlueAccent,
+                                            margin: const EdgeInsets.all(8),
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            // child: Assets.images.dummyImage.image(),
+                                            child: Image.network(
+                                              menus[selectedMenuIndex.value!]
+                                                  .imageUrl,
+                                              loadingBuilder:
+                                                  (context, child, event) {
+                                                if (event != null) {
+                                                  return const CircularProgressIndicator
+                                                      .adaptive();
+                                                }
+                                                return child;
+                                              },
+                                              frameBuilder: (context, child,
+                                                  frame, wasSynchronouslyLoaded) {
+                                                if (!wasSynchronouslyLoaded &&
+                                                    frame == 0) {
+                                                  debugPrint('image was loaded');
+                                                }
+                                                debugPrint(
+                                                    'frameBuilder was called: $frame');
+                                                return child;
+                                              },
+                                              fit: BoxFit.contain,
                                             ),
+                                          )
+                                        : const SizedBox.shrink(),
+                                  ),
+                                  selectedMenuIndex.value != null
+                                      ? Container(
+                                          alignment: Alignment.centerRight,
+                                          height: 25,
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 8.0),
+                                          child: Text.rich(
                                             TextSpan(
-                                              text:
-                                                  '(税込み ${menus[selectedMenuIndex.value!].priceWithTax}円)',
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .titleSmall,
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      '${menus[selectedMenuIndex.value!].price}円',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleLarge,
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      '(税込み ${menus[selectedMenuIndex.value!].priceWithTax}円)',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall,
+                                                ),
+                                              ],
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                  : const SizedBox(height: 25),
-                            ],
+                                          ),
+                                        )
+                                      : const SizedBox(height: 25),
+                                ],
+                              );
+                            },
+                            error: (error, stackTrace) {
+                              return const Center(child: Text('oops!'));
+                            },
+                            loading: () =>
+                                const CircularProgressIndicator.adaptive(),
                           );
                         },
-                        error: (error, stackTrace) {
-                          return const Center(child: Text('oops!'));
-                        },
-                        loading: () =>
-                            const CircularProgressIndicator.adaptive(),
                       ),
                     ),
                     Container(
@@ -604,6 +568,63 @@ class DashBoardPage extends HookConsumerWidget {
       // bottomNavigationBar: const PersistentBottomNavBar(
       //   navBarStyle: NavBarStyle.style9,
       // ),
+    );
+  }
+}
+
+class MenusCountWidget extends StatelessWidget {
+  const MenusCountWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: 1,
+      child: LayoutBuilder(builder: (context, constraints) {
+        return Container(
+          margin: const EdgeInsets.symmetric(
+              vertical: 8, horizontal: 12),
+          child: Stack(
+            children: [
+              Positioned(
+                right: constraints.maxWidth / 3,
+                top: 10,
+                height: constraints.maxHeight,
+                child: Text('8',
+                    style: TextStyle(
+                        fontSize: constraints.maxHeight / 2)),
+              ),
+              Positioned(
+                top: constraints.maxHeight / 9,
+                right: constraints.maxWidth / 8,
+                height: constraints.maxHeight,
+                child: Text('2',
+                    style: TextStyle(
+                        fontSize: constraints.maxHeight / 3)),
+              ),
+              Positioned(
+                top: constraints.maxHeight * 2 / 3,
+                left: constraints.maxWidth / 6,
+                child: Text(
+                  '',
+                  style: TextStyle(
+                      fontSize: constraints.maxHeight / 12),
+                ),
+              ),
+              Positioned(
+                top: constraints.maxHeight * 2.25 / 3,
+                left: constraints.maxWidth / 6,
+                child: Text(
+                  'menus',
+                  style: TextStyle(
+                      fontSize: constraints.maxHeight / 12),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
