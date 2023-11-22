@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,7 +10,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
-import 'package:saizeriya_menu_lottery/sandbox/dummy_data.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 Future<void> main() async {
@@ -108,8 +106,9 @@ class DashBoardPage extends HookConsumerWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   children: [
-                    // const MenusCountWidget(),
-                    MenuNumWidget(numOfMenus: numOfMenus),
+                    MediaQuery.sizeOf(context).width > 500
+                        ? MenuNumWidget(numOfMenus: numOfMenus)
+                        : MenusCountWidget(numOfMenus: numOfMenus),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 16.0),
                       child: VerticalDivider(),
@@ -189,7 +188,7 @@ class DashBoardPage extends HookConsumerWidget {
                                 return const Center(child: Text('oops!'));
                               },
                               loading: () =>
-                                  const CircularProgressIndicator.adaptive())),
+                                  const Center(child: CircularProgressIndicator.adaptive()))),
                     ),
                   ],
                 ),
@@ -233,8 +232,10 @@ class DashBoardPage extends HookConsumerWidget {
                                                 loadingBuilder:
                                                     (context, child, event) {
                                                   if (event != null) {
-                                                    return const CircularProgressIndicator
-                                                        .adaptive();
+                                                    return const Center(
+                                                      child: CircularProgressIndicator
+                                                          .adaptive(),
+                                                    );
                                                   }
                                                   return child;
                                                 },
@@ -292,7 +293,7 @@ class DashBoardPage extends HookConsumerWidget {
                               return const Center(child: Text('oops!'));
                             },
                             loading: () =>
-                                const CircularProgressIndicator.adaptive(),
+                                const Center(child: CircularProgressIndicator.adaptive()),
                           );
                         },
                       ),
@@ -376,7 +377,7 @@ class DashBoardPage extends HookConsumerWidget {
                               error: (error, stackTrace) =>
                                   const Center(child: Text('oops!')),
                               loading: () =>
-                                  const CircularProgressIndicator.adaptive())),
+                                  const Center(child: CircularProgressIndicator.adaptive()))),
                     ),
                   ],
                 ),
@@ -640,12 +641,21 @@ class MenuNumWidget extends StatelessWidget {
 }
 
 class MenusCountWidget extends StatelessWidget {
-  const MenusCountWidget({
-    super.key,
-  });
+  final int? numOfMenus;
+  const MenusCountWidget({super.key, this.numOfMenus});
 
   @override
   Widget build(BuildContext context) {
+    final numOfMenusStr = numOfMenus?.toString();
+    final String firstNum;
+    final String secondNum;
+    if ((numOfMenusStr?.length ?? 0) >= 2) {
+      firstNum = numOfMenusStr![0];
+      secondNum = numOfMenusStr.substring(1);
+    } else {
+      firstNum = '';
+      secondNum = '';
+    }
     return Expanded(
       flex: 1,
       child: LayoutBuilder(builder: (context, constraints) {
@@ -654,36 +664,37 @@ class MenusCountWidget extends StatelessWidget {
           child: Stack(
             children: [
               Positioned(
-                right: constraints.maxWidth / 3,
-                top: 10,
+                // right: constraints.maxWidth / 3,
+                // top: 10,
                 height: constraints.maxHeight,
-                child: ColoredBox(
-                  color: Colors.teal,
-                  child: Text('8',
-                      style: TextStyle(fontSize: constraints.maxHeight / 2)),
+                child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Baseline(
+                    baseline: constraints.maxHeight / 2,
+                    baselineType: TextBaseline.ideographic,
+                      child: Text(
+                        firstNum,
+                        style: TextStyle(fontSize: constraints.maxHeight / 2.5),
+                      ),
+                    ),
+                    Baseline(
+                    baseline: constraints.maxHeight / 3,
+                    baselineType: TextBaseline.ideographic,
+                      child: Text(
+                        secondNum,
+                        style: TextStyle(fontSize: constraints.maxHeight / 3.5),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              Positioned(
-                top: constraints.maxHeight / 9,
-                right: constraints.maxWidth / 8,
-                height: constraints.maxHeight,
-                child: Text('2',
-                    style: TextStyle(fontSize: constraints.maxHeight / 3)),
               ),
               Positioned(
                 top: constraints.maxHeight * 2 / 3,
                 left: constraints.maxWidth / 6,
                 child: Text(
-                  '',
-                  style: TextStyle(fontSize: constraints.maxHeight / 12),
-                ),
-              ),
-              Positioned(
-                top: constraints.maxHeight * 2.25 / 3,
-                left: constraints.maxWidth / 6,
-                child: Text(
                   'menus',
-                  style: TextStyle(fontSize: constraints.maxHeight / 12),
+                  style: TextStyle(fontSize: constraints.maxHeight / 8),
                 ),
               ),
             ],
