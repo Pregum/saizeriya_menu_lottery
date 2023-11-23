@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,6 +12,7 @@ import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
   await runZonedGuarded(
@@ -187,8 +189,9 @@ class DashBoardPage extends HookConsumerWidget {
                                     'error: $error, stackTrace: $stackTrace');
                                 return const Center(child: Text('oops!'));
                               },
-                              loading: () =>
-                                  const Center(child: CircularProgressIndicator.adaptive()))),
+                              loading: () => const Center(
+                                  child:
+                                      CircularProgressIndicator.adaptive()))),
                     ),
                   ],
                 ),
@@ -233,8 +236,9 @@ class DashBoardPage extends HookConsumerWidget {
                                                     (context, child, event) {
                                                   if (event != null) {
                                                     return const Center(
-                                                      child: CircularProgressIndicator
-                                                          .adaptive(),
+                                                      child:
+                                                          CircularProgressIndicator
+                                                              .adaptive(),
                                                     );
                                                   }
                                                   return child;
@@ -292,8 +296,8 @@ class DashBoardPage extends HookConsumerWidget {
                             error: (error, stackTrace) {
                               return const Center(child: Text('oops!'));
                             },
-                            loading: () =>
-                                const Center(child: CircularProgressIndicator.adaptive()),
+                            loading: () => const Center(
+                                child: CircularProgressIndicator.adaptive()),
                           );
                         },
                       ),
@@ -319,7 +323,7 @@ class DashBoardPage extends HookConsumerWidget {
                                             alignment: Alignment.centerLeft,
                                             child: Text(
                                               menus[selectedMenuIndex.value!]
-                                                      .name,
+                                                  .name,
                                               // dummyMenus[
                                               //     selectedMenuIndex.value!],
                                               style: Theme.of(context)
@@ -367,6 +371,28 @@ class DashBoardPage extends HookConsumerWidget {
                                                   .image(width: 32),
                                             ],
                                           ),
+                                          const Gap(8),
+                                          RichText(
+                                              text: TextSpan(children: [
+                                            const TextSpan(text: '他の特定原材料は'),
+                                            TextSpan(
+                                                text: 'こちら',
+                                                style: const TextStyle(
+                                                    color: Colors.blue),
+                                                recognizer:
+                                                    TapGestureRecognizer()
+                                                      ..onTap = () async {
+                                                        final url = Uri.parse(
+                                                            'https://allergy.saizeriya.co.jp/allergy');
+                                                        if (await canLaunchUrl(
+                                                            url)) {
+                                                          await launchUrl(url,
+                                                              mode: LaunchMode
+                                                                  .externalApplication);
+                                                        }
+                                                      }),
+                                            const TextSpan(text: 'からご覧ください'),
+                                          ]))
                                         ],
                                       )
                                     : const Center(
@@ -375,8 +401,9 @@ class DashBoardPage extends HookConsumerWidget {
                               },
                               error: (error, stackTrace) =>
                                   const Center(child: Text('oops!')),
-                              loading: () =>
-                                  const Center(child: CircularProgressIndicator.adaptive()))),
+                              loading: () => const Center(
+                                  child:
+                                      CircularProgressIndicator.adaptive()))),
                     ),
                   ],
                 ),
@@ -667,19 +694,19 @@ class MenusCountWidget extends StatelessWidget {
                 // top: 10,
                 height: constraints.maxHeight,
                 child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Baseline(
-                    baseline: constraints.maxHeight / 2,
-                    baselineType: TextBaseline.ideographic,
+                      baseline: constraints.maxHeight / 2,
+                      baselineType: TextBaseline.ideographic,
                       child: Text(
                         firstNum,
                         style: TextStyle(fontSize: constraints.maxHeight / 2.5),
                       ),
                     ),
                     Baseline(
-                    baseline: constraints.maxHeight / 3,
-                    baselineType: TextBaseline.ideographic,
+                      baseline: constraints.maxHeight / 3,
+                      baselineType: TextBaseline.ideographic,
                       child: Text(
                         secondNum,
                         style: TextStyle(fontSize: constraints.maxHeight / 3.5),
