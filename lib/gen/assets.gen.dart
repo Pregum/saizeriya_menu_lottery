@@ -63,6 +63,14 @@ class $AssetsImagesGen {
   AssetGenImage get shrimpBlk =>
       const AssetGenImage('assets/images/shrimp_blk.gif');
 
+  /// File path: assets/images/walnut_b_blk.gif
+  AssetGenImage get walnutBBlk =>
+      const AssetGenImage('assets/images/walnut_b_blk.gif');
+
+  /// File path: assets/images/walnut_blk.gif
+  AssetGenImage get walnutBlk =>
+      const AssetGenImage('assets/images/walnut_blk.gif');
+
   /// File path: assets/images/wheat_b_blk.gif
   AssetGenImage get wheatBBlk =>
       const AssetGenImage('assets/images/wheat_b_blk.gif');
@@ -86,6 +94,8 @@ class $AssetsImagesGen {
         peanutBlk,
         shrimpBBlk,
         shrimpBlk,
+        walnutBBlk,
+        walnutBlk,
         wheatBBlk,
         wheatBlk
       ];

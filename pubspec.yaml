@@ -104,6 +104,8 @@ flutter:
     - assets/images/shrimp_blk.gif
     - assets/images/wheat_b_blk.gif
     - assets/images/wheat_blk.gif
+    - assets/images/walnut_b_blk.gif
+    - assets/images/walnut_blk.gif
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg

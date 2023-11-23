@@ -38,6 +38,7 @@ mixin _$Menu {
   int get priceWithTax => throw _privateConstructorUsedError;
   @JsonKey(name: 'food_types')
   FoodType get foodType => throw _privateConstructorUsedError;
+  List<Allergen> get allergens => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -60,7 +61,8 @@ abstract class $MenuCopyWith<$Res> {
       @JsonKey(name: 'order_code') String orderCode,
       int price,
       @JsonKey(name: 'price_with_tax') int priceWithTax,
-      @JsonKey(name: 'food_types') FoodType foodType});
+      @JsonKey(name: 'food_types') FoodType foodType,
+      List<Allergen> allergens});
 
   $FoodTypeCopyWith<$Res> get foodType;
 }
@@ -89,6 +91,7 @@ class _$MenuCopyWithImpl<$Res, $Val extends Menu>
     Object? price = null,
     Object? priceWithTax = null,
     Object? foodType = null,
+    Object? allergens = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -135,6 +138,10 @@ class _$MenuCopyWithImpl<$Res, $Val extends Menu>
           ? _value.foodType
           : foodType // ignore: cast_nullable_to_non_nullable
               as FoodType,
+      allergens: null == allergens
+          ? _value.allergens
+          : allergens // ignore: cast_nullable_to_non_nullable
+              as List<Allergen>,
     ) as $Val);
   }
 
@@ -165,7 +172,8 @@ abstract class _$$MenuImplCopyWith<$Res> implements $MenuCopyWith<$Res> {
       @JsonKey(name: 'order_code') String orderCode,
       int price,
       @JsonKey(name: 'price_with_tax') int priceWithTax,
-      @JsonKey(name: 'food_types') FoodType foodType});
+      @JsonKey(name: 'food_types') FoodType foodType,
+      List<Allergen> allergens});
 
   @override
   $FoodTypeCopyWith<$Res> get foodType;
@@ -192,6 +200,7 @@ class __$$MenuImplCopyWithImpl<$Res>
     Object? price = null,
     Object? priceWithTax = null,
     Object? foodType = null,
+    Object? allergens = null,
   }) {
     return _then(_$MenuImpl(
       id: null == id
@@ -238,6 +247,10 @@ class __$$MenuImplCopyWithImpl<$Res>
           ? _value.foodType
           : foodType // ignore: cast_nullable_to_non_nullable
               as FoodType,
+      allergens: null == allergens
+          ? _value._allergens
+          : allergens // ignore: cast_nullable_to_non_nullable
+              as List<Allergen>,
     ));
   }
 }
@@ -257,7 +270,9 @@ class _$MenuImpl implements _Menu {
       @JsonKey(name: 'order_code') required this.orderCode,
       required this.price,
       @JsonKey(name: 'price_with_tax') required this.priceWithTax,
-      @JsonKey(name: 'food_types') required this.foodType});
+      @JsonKey(name: 'food_types') required this.foodType,
+      final List<Allergen> allergens = const []})
+      : _allergens = allergens;
 
   factory _$MenuImpl.fromJson(Map<String, dynamic> json) =>
       _$$MenuImplFromJson(json);
@@ -293,10 +308,18 @@ class _$MenuImpl implements _Menu {
   @override
   @JsonKey(name: 'food_types')
   final FoodType foodType;
+  final List<Allergen> _allergens;
+  @override
+  @JsonKey()
+  List<Allergen> get allergens {
+    if (_allergens is EqualUnmodifiableListView) return _allergens;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_allergens);
+  }
 
   @override
   String toString() {
-    return 'Menu(id: $id, name: $name, foodTypeId: $foodTypeId, createdAt: $createdAt, updatedAt: $updatedAt, imageUrl: $imageUrl, description: $description, orderCode: $orderCode, price: $price, priceWithTax: $priceWithTax, foodType: $foodType)';
+    return 'Menu(id: $id, name: $name, foodTypeId: $foodTypeId, createdAt: $createdAt, updatedAt: $updatedAt, imageUrl: $imageUrl, description: $description, orderCode: $orderCode, price: $price, priceWithTax: $priceWithTax, foodType: $foodType, allergens: $allergens)';
   }
 
   @override
@@ -322,7 +345,9 @@ class _$MenuImpl implements _Menu {
             (identical(other.priceWithTax, priceWithTax) ||
                 other.priceWithTax == priceWithTax) &&
             (identical(other.foodType, foodType) ||
-                other.foodType == foodType));
+                other.foodType == foodType) &&
+            const DeepCollectionEquality()
+                .equals(other._allergens, _allergens));
   }
 
   @JsonKey(ignore: true)
@@ -339,7 +364,8 @@ class _$MenuImpl implements _Menu {
       orderCode,
       price,
       priceWithTax,
-      foodType);
+      foodType,
+      const DeepCollectionEquality().hash(_allergens));
 
   @JsonKey(ignore: true)
   @override
@@ -357,18 +383,18 @@ class _$MenuImpl implements _Menu {
 
 abstract class _Menu implements Menu {
   factory _Menu(
-          {required final int id,
-          final String name,
-          @JsonKey(name: 'food_type_id') required final int foodTypeId,
-          @JsonKey(name: 'created_at') final DateTime? createdAt,
-          @JsonKey(name: 'updated_at') final DateTime? updatedAt,
-          @JsonKey(name: 'image_url') required final String imageUrl,
-          final String? description,
-          @JsonKey(name: 'order_code') required final String orderCode,
-          required final int price,
-          @JsonKey(name: 'price_with_tax') required final int priceWithTax,
-          @JsonKey(name: 'food_types') required final FoodType foodType}) =
-      _$MenuImpl;
+      {required final int id,
+      final String name,
+      @JsonKey(name: 'food_type_id') required final int foodTypeId,
+      @JsonKey(name: 'created_at') final DateTime? createdAt,
+      @JsonKey(name: 'updated_at') final DateTime? updatedAt,
+      @JsonKey(name: 'image_url') required final String imageUrl,
+      final String? description,
+      @JsonKey(name: 'order_code') required final String orderCode,
+      required final int price,
+      @JsonKey(name: 'price_with_tax') required final int priceWithTax,
+      @JsonKey(name: 'food_types') required final FoodType foodType,
+      final List<Allergen> allergens}) = _$MenuImpl;
 
   factory _Menu.fromJson(Map<String, dynamic> json) = _$MenuImpl.fromJson;
 
@@ -401,6 +427,8 @@ abstract class _Menu implements Menu {
   @override
   @JsonKey(name: 'food_types')
   FoodType get foodType;
+  @override
+  List<Allergen> get allergens;
   @override
   @JsonKey(ignore: true)
   _$$MenuImplCopyWith<_$MenuImpl> get copyWith =>
