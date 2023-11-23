@@ -130,7 +130,7 @@ class DashBoardPage extends HookConsumerWidget {
                               'このサイトについて',
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
-                            const Text('このサイトは有志が開発した、非公式のファンサイトです。'),
+                            const Text('このサイトは有志が開発した、サイゼリヤのメニューが閲覧できる非公式のファンサイトです。'),
                             const Text('現在のメニューと異なる場合がございます。'),
                             RichText(
                               text: TextSpan(
@@ -204,6 +204,8 @@ class DashBoardPage extends HookConsumerWidget {
                                 ],
                               ),
                             ),
+                            const Text('説明テキストがないものにつきましては、開発者が独自にテキストを追加しております。'),
+                            const Text('商品名については表記揺れがある可能性がございます。'),
                             const Text('また、特定原材料は表示が必須な8品目のみ表示しております。'),
                             Text.rich(
                               TextSpan(
