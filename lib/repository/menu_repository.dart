@@ -28,7 +28,6 @@ Future<List<Menu>> fetchAllMenus(FetchAllMenusRef ref) async {
     debugPrint('error!!! $e');
     rethrow;
   }
-  // return [];
 }
 
 @Riverpod(dependencies: [supabase])
