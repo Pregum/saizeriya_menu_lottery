@@ -48,6 +48,7 @@ dependencies:
   flutter_gen: ^5.3.2
   auto_size_text: ^3.0.0
   scrollable_positioned_list: ^0.3.8
+  url_launcher: ^6.2.1
 
 dev_dependencies:
   flutter_test:
