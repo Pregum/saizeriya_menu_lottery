@@ -619,24 +619,21 @@ class DashBoardPage extends HookConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'Grand Menu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.stars_outlined),
-            label: 'Special Menu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: 'Order List',
-          ),
-        ],
-      ),
-      // bottomNavigationBar: const PersistentBottomNavBar(
-      //   navBarStyle: NavBarStyle.style9,
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.menu_book),
+      //       label: 'Grand Menu',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.stars_outlined),
+      //       label: 'Special Menu',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.shopping_cart_outlined),
+      //       label: 'Order List',
+      //     ),
+      //   ],
       // ),
     );
   }
