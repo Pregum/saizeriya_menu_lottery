@@ -130,7 +130,8 @@ class DashBoardPage extends HookConsumerWidget {
                               'このサイトについて',
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
-                            const Text('このサイトは有志が開発した、サイゼリヤのメニューが閲覧できる非公式のファンサイトです。'),
+                            const Text(
+                                'このサイトは有志が開発した、サイゼリヤのメニューが閲覧できる非公式のファンサイトです。'),
                             const Text('現在のメニューと異なる場合がございます。'),
                             RichText(
                               text: TextSpan(
@@ -204,7 +205,8 @@ class DashBoardPage extends HookConsumerWidget {
                                 ],
                               ),
                             ),
-                            const Text('説明テキストがないものにつきましては、開発者が独自にテキストを追加しております。'),
+                            const Text(
+                                '説明テキストがないものにつきましては、開発者が独自にテキストを追加しております。'),
                             const Text('商品名については表記揺れがある可能性がございます。'),
                             const Text('また、特定原材料は表示が必須な8品目のみ表示しております。'),
                             Text.rich(
@@ -515,134 +517,97 @@ class DashBoardPage extends HookConsumerWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Container(
-                          margin: const EdgeInsets.all(8),
-                          child: asyncMenus.when(
-                              data: (menus) {
-                                // TODO: ここにallergensを取得するコードを入れる。
-                                final hasSelectedMenu =
-                                    selectedMenuIndex.value != null;
-                                if (hasSelectedMenu) {
-                                  // final allergens = ref.read(
-                                  //   fetchAllergensByIdProvider(
-                                  //     menus[selectedMenuIndex.value!].id,
-                                  //   ),
-                                  // );
-                                  final menu = menus[selectedMenuIndex.value!];
+                      child: SingleChildScrollView(
+                        child: Container(
+                            margin: const EdgeInsets.all(8),
+                            child: asyncMenus.when(
+                                data: (menus) {
+                                  final hasSelectedMenu =
+                                      selectedMenuIndex.value != null;
+                                  if (hasSelectedMenu) {
+                                    final menu =
+                                        menus[selectedMenuIndex.value!];
 
-                                  return Column(
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          menu.name,
-                                          // dummyMenus[
-                                          //     selectedMenuIndex.value!],
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleLarge,
+                                    return Column(
+                                      children: [
+                                        Container(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            menu.name,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleLarge,
+                                          ),
                                         ),
-                                      ),
-                                      const Gap(8),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
-                                        child: Text(
-                                          // 'ここに料理のフレーバーテキストが入ります',
-                                          menu.description ??
-                                              'ここに料理のフレーバーテキストが入ります',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 2,
+                                        const Gap(8),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
+                                          child: Text(
+                                            // 'ここに料理のフレーバーテキストが入ります',
+                                            menu.description ??
+                                                'ここに料理のフレーバーテキストが入ります',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                          ),
                                         ),
-                                      ),
-                                      const Gap(8),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          '法令で規定する特定原材料8品目',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
+                                        const Gap(8),
+                                        Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            '法令で規定する特定原材料8品目',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium,
+                                          ),
                                         ),
-                                      ),
-                                      const Gap(8),
-
-                                      Wrap(
-                                        alignment: WrapAlignment.center,
-                                        children: [
-                                          ...menu.allergens
-                                              .where((e) => e.image != null)
-                                              .map((m) => m.image!.image())
-                                        ],
-                                      ),
-                                      // allergens.when(
-                                      //   data: (fetchedAllergen) {
-                                      //     // return Container();
-
-                                      //     return Wrap(
-                                      //       alignment: WrapAlignment.center,
-                                      //       children: [
-                                      //         Text('$fetchedAllergen')
-                                      //       ],
-                                      //     );
-                                      //   },
-                                      //   error: (error, stackTrace) =>
-                                      //       const Center(child: Text('oops!!')),
-                                      //   loading: () => const Center(
-                                      //     child: CircularProgressIndicator
-                                      //         .adaptive(),
-                                      //   ),
-                                      // ),
-                                      // Wrap(
-                                      //   alignment: WrapAlignment.center,
-                                      //   children: [
-                                      //     // Assets.images.buckwheatBBlk
-                                      //     //     .image(width: 32),
-                                      //     // Assets.images.eggBBlk
-                                      //     //     .image(width: 32),
-                                      //     // Assets.images.crabBBlk
-                                      //     //     .image(width: 32),
-                                      //     // Assets.images.shrimpBBlk
-                                      //     //     .image(width: 32),
-                                      //   ],
-                                      // ),
-                                      const Gap(8),
-                                      RichText(
-                                          text: TextSpan(children: [
-                                        const TextSpan(text: '他の特定原材料は'),
-                                        TextSpan(
-                                            text: 'こちら',
-                                            style: const TextStyle(
-                                                color: Colors.blue),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () async {
-                                                // 頑張るなら管理画面から渡すようにする
-                                                final url = Uri.parse(
-                                                    'https://allergy.saizeriya.co.jp/allergy');
-                                                if (await canLaunchUrl(url)) {
-                                                  await launchUrl(url,
-                                                      mode: LaunchMode
-                                                          .externalApplication);
-                                                }
-                                              }),
-                                        const TextSpan(text: 'からご覧ください'),
-                                      ]))
-                                    ],
-                                  );
-                                } else {
-                                  return const Center(
-                                      child:
-                                          Text('メニューを選択すると、ここに料理の詳細が表示されます。'));
-                                }
-                              },
-                              error: (error, stackTrace) =>
-                                  const Center(child: Text('oops!')),
-                              loading: () => const Center(
-                                  child:
-                                      CircularProgressIndicator.adaptive()))),
+                                        const Gap(8),
+                                        Wrap(
+                                          alignment: WrapAlignment.center,
+                                          children: [
+                                            ...menu.allergens
+                                                .where((e) => e.image != null)
+                                                .map((m) => m.image!.image())
+                                          ],
+                                        ),
+                                        const Gap(8),
+                                        RichText(
+                                            text: TextSpan(children: [
+                                          const TextSpan(text: '他の特定原材料は'),
+                                          TextSpan(
+                                              text: 'こちら',
+                                              style: const TextStyle(
+                                                  color: Colors.blue),
+                                              recognizer: TapGestureRecognizer()
+                                                ..onTap = () async {
+                                                  // 頑張るなら管理画面から渡すようにする
+                                                  final url = Uri.parse(
+                                                      'https://allergy.saizeriya.co.jp/allergy');
+                                                  if (await canLaunchUrl(url)) {
+                                                    await launchUrl(url,
+                                                        mode: LaunchMode
+                                                            .externalApplication);
+                                                  }
+                                                }),
+                                          const TextSpan(text: 'からご覧ください'),
+                                        ]))
+                                      ],
+                                    );
+                                  } else {
+                                    return const Center(
+                                        child: Text(
+                                            'メニューを選択すると、ここに料理の詳細が表示されます。'));
+                                  }
+                                },
+                                error: (error, stackTrace) =>
+                                    const Center(child: Text('oops!')),
+                                loading: () => const Center(
+                                    child:
+                                        CircularProgressIndicator.adaptive()))),
+                      ),
                     ),
                   ],
                 ),
