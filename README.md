@@ -21,7 +21,7 @@ https://pakelog.net/allegy_illust
 
 ## ホスティングURL
 
-// TBD
+https://saizeriya-menu-lottery.pages.dev/
 
 ## 問い合わせ
 
