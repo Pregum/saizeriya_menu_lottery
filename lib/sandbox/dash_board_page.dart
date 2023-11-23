@@ -12,6 +12,7 @@ import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:simple_icons/simple_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> main() async {
@@ -71,6 +72,8 @@ class DashBoardPage extends HookConsumerWidget {
   DashBoardPage({super.key});
   final itemController = ItemScrollController();
 
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: 向き先をDBに差し替える
@@ -83,6 +86,54 @@ class DashBoardPage extends HookConsumerWidget {
         asyncMenus.maybeWhen(data: (data) => data.length, orElse: () => 0);
 
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: Drawer(
+        child: ListView(
+          children: [
+            InkWell(
+              onTap: () async {
+                final uri = Uri.parse(
+                    'https://github.com/Pregum/saizeriya_menu_lottery');
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                }
+              },
+              child: const SizedBox(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('GitHubのリポジトリ'),
+                    Icon(SimpleIcons.github),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                final _ = ref.refresh(fetchAllMenusProvider);
+              },
+              child: const SizedBox(
+                height: 50,
+                child: Center(
+                  child: Text('更新'),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                showLicensePage(context: context);
+              },
+              child: const SizedBox(
+                height: 50,
+                child: Center(
+                  child: Text('ライセンス'),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -101,9 +152,10 @@ class DashBoardPage extends HookConsumerWidget {
                   ),
                 ),
                 const Spacer(),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(Icons.menu),
+                DrawerButton(
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openEndDrawer();
+                  },
                 )
               ],
             ),
@@ -141,12 +193,13 @@ class DashBoardPage extends HookConsumerWidget {
                                     // final menu = dummyMenus[index];
                                     final menu = menus[index];
                                     return Material(
-                                      color: selectedMenuIndex.value == index
-                                          ? Colors.tealAccent
-                                          : Colors.transparent,
+                                      color:
+                                          selectedMenuIndex.value == index
+                                              ? Colors.tealAccent
+                                              : Colors.transparent,
                                       child: InkWell(
-                                        onTap: () =>
-                                            selectedMenuIndex.value = index,
+                                        onTap: () => selectedMenuIndex
+                                            .value = index,
                                         child: Row(
                                           mainAxisSize: MainAxisSize.max,
                                           // mainAxisAlignment:
@@ -157,17 +210,20 @@ class DashBoardPage extends HookConsumerWidget {
                                               child: AutoSizeText(
                                                 menu.name,
                                                 maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
+                                                overflow:
+                                                    TextOverflow.ellipsis,
                                                 minFontSize: 10,
                                               ),
                                             ),
                                             const Gap(8),
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 4.0),
+                                              padding:
+                                                  const EdgeInsets.only(
+                                                      right: 4.0),
                                               child: AutoSizeText(
                                                 menu.orderCode,
-                                                overflow: TextOverflow.ellipsis,
+                                                overflow:
+                                                    TextOverflow.ellipsis,
                                               ),
                                             ),
                                           ],
@@ -197,8 +253,8 @@ class DashBoardPage extends HookConsumerWidget {
                                 return const Center(child: Text('oops!'));
                               },
                               loading: () => const Center(
-                                  child:
-                                      CircularProgressIndicator.adaptive()))),
+                                  child: CircularProgressIndicator
+                                      .adaptive()))),
                     ),
                   ],
                 ),
@@ -218,8 +274,8 @@ class DashBoardPage extends HookConsumerWidget {
                     Expanded(
                       flex: 1,
                       child: LayoutBuilder(
-                        builder:
-                            (BuildContext context, BoxConstraints constraints) {
+                        builder: (BuildContext context,
+                            BoxConstraints constraints) {
                           return asyncMenus.when(
                             data: (menus) {
                               return Column(
@@ -227,20 +283,25 @@ class DashBoardPage extends HookConsumerWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Flexible(
-                                      child: selectedMenuIndex.value != null
+                                      child: selectedMenuIndex.value !=
+                                              null
                                           ? Container(
                                               // color: Colors.lightBlueAccent,
-                                              margin: const EdgeInsets.all(8),
-                                              clipBehavior: Clip.antiAlias,
+                                              margin:
+                                                  const EdgeInsets.all(8),
+                                              clipBehavior:
+                                                  Clip.antiAlias,
                                               decoration: BoxDecoration(
                                                   borderRadius:
-                                                      BorderRadius.circular(8)),
+                                                      BorderRadius
+                                                          .circular(8)),
                                               // child: Assets.images.dummyImage.image(),
                                               child: Image.network(
-                                                menus[selectedMenuIndex.value!]
+                                                menus[selectedMenuIndex
+                                                        .value!]
                                                     .imageUrl,
-                                                loadingBuilder:
-                                                    (context, child, event) {
+                                                loadingBuilder: (context,
+                                                    child, event) {
                                                   if (event != null) {
                                                     return const Center(
                                                       child:
@@ -271,10 +332,12 @@ class DashBoardPage extends HookConsumerWidget {
                                                   'メニューを選択すると、ここに料理の画像が表示されます。'))),
                                   selectedMenuIndex.value != null
                                       ? Container(
-                                          alignment: Alignment.centerRight,
+                                          alignment:
+                                              Alignment.centerRight,
                                           height: 25,
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
+                                          margin:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 8.0),
                                           child: Text.rich(
                                             TextSpan(
                                               children: [
@@ -304,7 +367,8 @@ class DashBoardPage extends HookConsumerWidget {
                               return const Center(child: Text('oops!'));
                             },
                             loading: () => const Center(
-                                child: CircularProgressIndicator.adaptive()),
+                                child:
+                                    CircularProgressIndicator.adaptive()),
                           );
                         },
                       ),
@@ -332,7 +396,8 @@ class DashBoardPage extends HookConsumerWidget {
                                   //     menus[selectedMenuIndex.value!].id,
                                   //   ),
                                   // );
-                                  final menu = menus[selectedMenuIndex.value!];
+                                  final menu =
+                                      menus[selectedMenuIndex.value!];
 
                                   return Column(
                                     children: [
@@ -349,8 +414,8 @@ class DashBoardPage extends HookConsumerWidget {
                                       ),
                                       const Gap(8),
                                       Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 8.0),
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0),
                                         child: Text(
                                           // 'ここに料理のフレーバーテキストが入ります',
                                           menu.description ??
@@ -378,8 +443,10 @@ class DashBoardPage extends HookConsumerWidget {
                                         alignment: WrapAlignment.center,
                                         children: [
                                           ...menu.allergens
-                                              .where((e) => e.image != null)
-                                              .map((m) => m.image!.image())
+                                              .where(
+                                                  (e) => e.image != null)
+                                              .map(
+                                                  (m) => m.image!.image())
                                         ],
                                       ),
                                       // allergens.when(
@@ -421,32 +488,34 @@ class DashBoardPage extends HookConsumerWidget {
                                             text: 'こちら',
                                             style: const TextStyle(
                                                 color: Colors.blue),
-                                            recognizer: TapGestureRecognizer()
-                                              ..onTap = () async {
-                                                // 頑張るなら管理画面から渡すようにする
-                                                final url = Uri.parse(
-                                                    'https://allergy.saizeriya.co.jp/allergy');
-                                                if (await canLaunchUrl(url)) {
-                                                  await launchUrl(url,
-                                                      mode: LaunchMode
-                                                          .externalApplication);
-                                                }
-                                              }),
+                                            recognizer:
+                                                TapGestureRecognizer()
+                                                  ..onTap = () async {
+                                                    // 頑張るなら管理画面から渡すようにする
+                                                    final url = Uri.parse(
+                                                        'https://allergy.saizeriya.co.jp/allergy');
+                                                    if (await canLaunchUrl(
+                                                        url)) {
+                                                      await launchUrl(url,
+                                                          mode: LaunchMode
+                                                              .externalApplication);
+                                                    }
+                                                  }),
                                         const TextSpan(text: 'からご覧ください'),
                                       ]))
                                     ],
                                   );
                                 } else {
                                   return const Center(
-                                      child:
-                                          Text('メニューを選択すると、ここに料理の詳細が表示されます。'));
+                                      child: Text(
+                                          'メニューを選択すると、ここに料理の詳細が表示されます。'));
                                 }
                               },
                               error: (error, stackTrace) =>
                                   const Center(child: Text('oops!')),
                               loading: () => const Center(
-                                  child:
-                                      CircularProgressIndicator.adaptive()))),
+                                  child: CircularProgressIndicator
+                                      .adaptive()))),
                     ),
                   ],
                 ),
@@ -465,23 +534,26 @@ class DashBoardPage extends HookConsumerWidget {
                           Expanded(
                             flex: 1,
                             child: Container(
-                              margin: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+                              margin:
+                                  const EdgeInsets.fromLTRB(0, 0, 0, 4),
                               // color: Colors.green,
                               child: Row(children: [
                                 Expanded(
                                   flex: 1,
                                   child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4),
                                     margin: const EdgeInsets.all(8),
                                     child: Material(
                                       // color: Colors.lightBlue,
                                       elevation: 2,
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius:
+                                          BorderRadius.circular(8),
                                       child: InkWell(
                                         onTap: () {
                                           final hasPreviousMenu =
-                                              selectedMenuIndex.value != null &&
+                                              selectedMenuIndex.value !=
+                                                      null &&
                                                   0 <=
                                                       (selectedMenuIndex
                                                               .value! -
@@ -489,10 +561,12 @@ class DashBoardPage extends HookConsumerWidget {
 
                                           if (hasPreviousMenu) {
                                             selectedMenuIndex.value =
-                                                selectedMenuIndex.value! - 1;
+                                                selectedMenuIndex.value! -
+                                                    1;
                                             // final offset = Offset();
                                             itemController.scrollTo(
-                                              index: selectedMenuIndex.value!,
+                                              index: selectedMenuIndex
+                                                  .value!,
                                               duration: const Duration(
                                                   milliseconds: 150),
                                               alignment: 0.2,
@@ -502,8 +576,8 @@ class DashBoardPage extends HookConsumerWidget {
                                         child: const Column(
                                           children: [
                                             Expanded(
-                                              child:
-                                                  Icon(Icons.arrow_circle_left),
+                                              child: Icon(Icons
+                                                  .arrow_circle_left),
                                             ),
                                             Text('前のメニューへ'),
                                           ],
@@ -519,35 +593,41 @@ class DashBoardPage extends HookConsumerWidget {
                                 Expanded(
                                   flex: 1,
                                   child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4),
                                     margin: const EdgeInsets.all(8),
                                     child: Material(
                                       // color: Colors.lightBlue,
                                       elevation: 2,
-                                      borderRadius: BorderRadius.circular(8),
+                                      borderRadius:
+                                          BorderRadius.circular(8),
                                       child: InkWell(
                                         onTap: () {
-                                          final menus = asyncMenus.maybeWhen(
-                                              data: (value) => value,
-                                              loading: () => [],
-                                              orElse: () {
-                                                return [];
-                                              });
+                                          final menus =
+                                              asyncMenus.maybeWhen(
+                                                  data: (value) => value,
+                                                  loading: () => [],
+                                                  orElse: () {
+                                                    return [];
+                                                  });
                                           if (menus.isEmpty) {
                                             return;
                                           }
                                           final hasNextMenu =
-                                              selectedMenuIndex.value != null &&
-                                                  (selectedMenuIndex.value! +
+                                              selectedMenuIndex.value !=
+                                                      null &&
+                                                  (selectedMenuIndex
+                                                              .value! +
                                                           1) <
                                                       menus.length;
                                           if (hasNextMenu) {
                                             selectedMenuIndex.value =
-                                                selectedMenuIndex.value! + 1;
+                                                selectedMenuIndex.value! +
+                                                    1;
 
                                             itemController.scrollTo(
-                                              index: selectedMenuIndex.value!,
+                                              index: selectedMenuIndex
+                                                  .value!,
                                               duration: const Duration(
                                                   milliseconds: 150),
                                               alignment: 0.2,
@@ -565,8 +645,8 @@ class DashBoardPage extends HookConsumerWidget {
                                             Expanded(
                                               // child: ColoredBox(
                                               //     color: Colors.red)),
-                                              child: Icon(
-                                                  Icons.arrow_circle_right),
+                                              child: Icon(Icons
+                                                  .arrow_circle_right),
                                             ),
                                             Text('次のメニューへ'),
                                           ],
