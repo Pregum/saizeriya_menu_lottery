@@ -120,7 +120,7 @@ class DashBoardPage extends HookConsumerWidget {
                   builder: (context) {
                     return Container(
                       margin: const EdgeInsets.all(16),
-                      height: MediaQuery.sizeOf(context).height / 2,
+                      height: MediaQuery.sizeOf(context).height - 50,
                       width: MediaQuery.sizeOf(context).width,
                       child: SingleChildScrollView(
                         child: Column(
@@ -131,7 +131,7 @@ class DashBoardPage extends HookConsumerWidget {
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             const Text('このサイトは有志が開発した、非公式のファンサイトです。'),
-                            const Text('メニューは現在のメニューと異なる場合がございます。'),
+                            const Text('現在のメニューと異なる場合がございます。'),
                             RichText(
                               text: TextSpan(
                                 children: [
@@ -169,7 +169,7 @@ class DashBoardPage extends HookConsumerWidget {
                             ),
                             const Gap(16),
                             Text(
-                              'メニューについて',
+                              '表示している情報について',
                               style: Theme.of(context).textTheme.titleLarge,
                             ),
                             Text.rich(
@@ -200,9 +200,7 @@ class DashBoardPage extends HookConsumerWidget {
                                         }
                                       },
                                   ),
-                                  const TextSpan(
-                                      text:
-                                          'の情報を使用しております。'),
+                                  const TextSpan(text: 'の情報を使用しております。'),
                                 ],
                               ),
                             ),
@@ -210,7 +208,7 @@ class DashBoardPage extends HookConsumerWidget {
                             const Gap(16),
                             Text('免責事項',
                                 style: Theme.of(context).textTheme.titleLarge),
-                            const Text('何らかの都合で直接・間接的に生じた損失に関し一切責任を負いかねます。'),
+                            const Text('当サイトの利用で直接・間接的に生じた損失に関し一切責任を負いかねます。'),
                           ],
                         ),
                       ),
