@@ -351,7 +351,7 @@ class DashBoardPage extends HookConsumerWidget {
                                           Align(
                                             alignment: Alignment.centerLeft,
                                             child: Text(
-                                              '含まれる特定原材料',
+                                              '法令で規定する特定原材料8品目',
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .titleMedium,
@@ -382,6 +382,7 @@ class DashBoardPage extends HookConsumerWidget {
                                                 recognizer:
                                                     TapGestureRecognizer()
                                                       ..onTap = () async {
+                                                        // 頑張るなら管理画面から渡すようにする
                                                         final url = Uri.parse(
                                                             'https://allergy.saizeriya.co.jp/allergy');
                                                         if (await canLaunchUrl(
