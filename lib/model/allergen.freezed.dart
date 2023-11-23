@@ -20,9 +20,8 @@ Allergen _$AllergenFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Allergen {
-  int? get id => throw _privateConstructorUsedError;
-  int? get menuId => throw _privateConstructorUsedError;
-  int? get allergenId => throw _privateConstructorUsedError;
+  int get id => throw _privateConstructorUsedError;
+  String? get name => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +34,7 @@ abstract class $AllergenCopyWith<$Res> {
   factory $AllergenCopyWith(Allergen value, $Res Function(Allergen) then) =
       _$AllergenCopyWithImpl<$Res, Allergen>;
   @useResult
-  $Res call({int? id, int? menuId, int? allergenId});
+  $Res call({int id, String? name});
 }
 
 /// @nodoc
@@ -51,23 +50,18 @@ class _$AllergenCopyWithImpl<$Res, $Val extends Allergen>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? menuId = freezed,
-    Object? allergenId = freezed,
+    Object? id = null,
+    Object? name = freezed,
   }) {
     return _then(_value.copyWith(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      menuId: freezed == menuId
-          ? _value.menuId
-          : menuId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      allergenId: freezed == allergenId
-          ? _value.allergenId
-          : allergenId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -80,7 +74,7 @@ abstract class _$$AllergenImplCopyWith<$Res>
       __$$AllergenImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? id, int? menuId, int? allergenId});
+  $Res call({int id, String? name});
 }
 
 /// @nodoc
@@ -94,46 +88,39 @@ class __$$AllergenImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? id = freezed,
-    Object? menuId = freezed,
-    Object? allergenId = freezed,
+    Object? id = null,
+    Object? name = freezed,
   }) {
     return _then(_$AllergenImpl(
-      id: freezed == id
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
-              as int?,
-      menuId: freezed == menuId
-          ? _value.menuId
-          : menuId // ignore: cast_nullable_to_non_nullable
-              as int?,
-      allergenId: freezed == allergenId
-          ? _value.allergenId
-          : allergenId // ignore: cast_nullable_to_non_nullable
-              as int?,
+              as int,
+      name: freezed == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
 
 /// @nodoc
-
-@JsonSerializable(fieldRename: FieldRename.snake)
-class _$AllergenImpl implements _Allergen {
-  _$AllergenImpl({required this.id, this.menuId, this.allergenId});
+@JsonSerializable()
+class _$AllergenImpl extends _Allergen {
+  _$AllergenImpl({required this.id, this.name = ''}) : super._();
 
   factory _$AllergenImpl.fromJson(Map<String, dynamic> json) =>
       _$$AllergenImplFromJson(json);
 
   @override
-  final int? id;
+  final int id;
   @override
-  final int? menuId;
-  @override
-  final int? allergenId;
+  @JsonKey()
+  final String? name;
 
   @override
   String toString() {
-    return 'Allergen(id: $id, menuId: $menuId, allergenId: $allergenId)';
+    return 'Allergen(id: $id, name: $name)';
   }
 
   @override
@@ -142,14 +129,12 @@ class _$AllergenImpl implements _Allergen {
         (other.runtimeType == runtimeType &&
             other is _$AllergenImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.menuId, menuId) || other.menuId == menuId) &&
-            (identical(other.allergenId, allergenId) ||
-                other.allergenId == allergenId));
+            (identical(other.name, name) || other.name == name));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, menuId, allergenId);
+  int get hashCode => Object.hash(runtimeType, id, name);
 
   @JsonKey(ignore: true)
   @override
@@ -165,21 +150,18 @@ class _$AllergenImpl implements _Allergen {
   }
 }
 
-abstract class _Allergen implements Allergen {
-  factory _Allergen(
-      {required final int? id,
-      final int? menuId,
-      final int? allergenId}) = _$AllergenImpl;
+abstract class _Allergen extends Allergen {
+  factory _Allergen({required final int id, final String? name}) =
+      _$AllergenImpl;
+  _Allergen._() : super._();
 
   factory _Allergen.fromJson(Map<String, dynamic> json) =
       _$AllergenImpl.fromJson;
 
   @override
-  int? get id;
+  int get id;
   @override
-  int? get menuId;
-  @override
-  int? get allergenId;
+  String? get name;
   @override
   @JsonKey(ignore: true)
   _$$AllergenImplCopyWith<_$AllergenImpl> get copyWith =>

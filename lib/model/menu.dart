@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:saizeriya_menu_lottery/model/allergen.dart';
 import 'package:saizeriya_menu_lottery/model/food_type.dart';
 
 part 'menu.freezed.dart';
@@ -21,6 +22,7 @@ class Menu with _$Menu {
     required int price,
     @JsonKey(name: 'price_with_tax') required int priceWithTax,
     @JsonKey(name: 'food_types') required FoodType foodType,
+    @Default([]) List<Allergen> allergens,
   }) = _Menu;
 
   factory Menu.fromJson(Map<String, dynamic> json) => _$MenuFromJson(json);

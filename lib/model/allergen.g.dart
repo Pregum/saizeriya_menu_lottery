@@ -8,14 +8,12 @@ part of 'allergen.dart';
 
 _$AllergenImpl _$$AllergenImplFromJson(Map<String, dynamic> json) =>
     _$AllergenImpl(
-      id: json['id'] as int?,
-      menuId: json['menu_id'] as int?,
-      allergenId: json['allergen_id'] as int?,
+      id: json['id'] as int,
+      name: json['name'] as String? ?? '',
     );
 
 Map<String, dynamic> _$$AllergenImplToJson(_$AllergenImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
-      'menu_id': instance.menuId,
-      'allergen_id': instance.allergenId,
+      'name': instance.name,
     };

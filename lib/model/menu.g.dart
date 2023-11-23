@@ -22,6 +22,10 @@ _$MenuImpl _$$MenuImplFromJson(Map<String, dynamic> json) => _$MenuImpl(
       price: json['price'] as int,
       priceWithTax: json['price_with_tax'] as int,
       foodType: FoodType.fromJson(json['food_types'] as Map<String, dynamic>),
+      allergens: (json['allergens'] as List<dynamic>?)
+              ?.map((e) => Allergen.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$MenuImplToJson(_$MenuImpl instance) =>
@@ -37,4 +41,5 @@ Map<String, dynamic> _$$MenuImplToJson(_$MenuImpl instance) =>
       'price': instance.price,
       'price_with_tax': instance.priceWithTax,
       'food_types': instance.foodType.toJson(),
+      'allergens': instance.allergens.map((e) => e.toJson()).toList(),
     };
