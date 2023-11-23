@@ -205,6 +205,26 @@ class DashBoardPage extends HookConsumerWidget {
                               ),
                             ),
                             const Text('また、特定原材料は表示が必須な8品目のみ表示しております。'),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  const TextSpan(text: '特定原材料のアイコンは、'),
+                                  TextSpan(
+                                    text: 'こちらから',
+                                    style: const TextStyle(color: Colors.blue),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri.parse(
+                                            'https://pakelog.net/allegy_illust');
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(uri);
+                                        }
+                                      },
+                                  ),
+                                  const TextSpan(text: 'お借りしました。'),
+                                ],
+                              ),
+                            ),
                             const Gap(16),
                             Text('免責事項',
                                 style: Theme.of(context).textTheme.titleLarge),
