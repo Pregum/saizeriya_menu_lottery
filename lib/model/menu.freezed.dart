@@ -36,6 +36,8 @@ mixin _$Menu {
   int get price => throw _privateConstructorUsedError;
   @JsonKey(name: 'price_with_tax')
   int get priceWithTax => throw _privateConstructorUsedError;
+  @JsonKey(name: 'food_types')
+  FoodType get foodType => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -57,7 +59,10 @@ abstract class $MenuCopyWith<$Res> {
       String? description,
       @JsonKey(name: 'order_code') String orderCode,
       int price,
-      @JsonKey(name: 'price_with_tax') int priceWithTax});
+      @JsonKey(name: 'price_with_tax') int priceWithTax,
+      @JsonKey(name: 'food_types') FoodType foodType});
+
+  $FoodTypeCopyWith<$Res> get foodType;
 }
 
 /// @nodoc
@@ -83,6 +88,7 @@ class _$MenuCopyWithImpl<$Res, $Val extends Menu>
     Object? orderCode = null,
     Object? price = null,
     Object? priceWithTax = null,
+    Object? foodType = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -125,7 +131,19 @@ class _$MenuCopyWithImpl<$Res, $Val extends Menu>
           ? _value.priceWithTax
           : priceWithTax // ignore: cast_nullable_to_non_nullable
               as int,
+      foodType: null == foodType
+          ? _value.foodType
+          : foodType // ignore: cast_nullable_to_non_nullable
+              as FoodType,
     ) as $Val);
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $FoodTypeCopyWith<$Res> get foodType {
+    return $FoodTypeCopyWith<$Res>(_value.foodType, (value) {
+      return _then(_value.copyWith(foodType: value) as $Val);
+    });
   }
 }
 
@@ -146,7 +164,11 @@ abstract class _$$MenuImplCopyWith<$Res> implements $MenuCopyWith<$Res> {
       String? description,
       @JsonKey(name: 'order_code') String orderCode,
       int price,
-      @JsonKey(name: 'price_with_tax') int priceWithTax});
+      @JsonKey(name: 'price_with_tax') int priceWithTax,
+      @JsonKey(name: 'food_types') FoodType foodType});
+
+  @override
+  $FoodTypeCopyWith<$Res> get foodType;
 }
 
 /// @nodoc
@@ -169,6 +191,7 @@ class __$$MenuImplCopyWithImpl<$Res>
     Object? orderCode = null,
     Object? price = null,
     Object? priceWithTax = null,
+    Object? foodType = null,
   }) {
     return _then(_$MenuImpl(
       id: null == id
@@ -211,12 +234,17 @@ class __$$MenuImplCopyWithImpl<$Res>
           ? _value.priceWithTax
           : priceWithTax // ignore: cast_nullable_to_non_nullable
               as int,
+      foodType: null == foodType
+          ? _value.foodType
+          : foodType // ignore: cast_nullable_to_non_nullable
+              as FoodType,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(explicitToJson: true)
 class _$MenuImpl implements _Menu {
   _$MenuImpl(
       {required this.id,
@@ -228,7 +256,8 @@ class _$MenuImpl implements _Menu {
       this.description = null,
       @JsonKey(name: 'order_code') required this.orderCode,
       required this.price,
-      @JsonKey(name: 'price_with_tax') required this.priceWithTax});
+      @JsonKey(name: 'price_with_tax') required this.priceWithTax,
+      @JsonKey(name: 'food_types') required this.foodType});
 
   factory _$MenuImpl.fromJson(Map<String, dynamic> json) =>
       _$$MenuImplFromJson(json);
@@ -261,10 +290,13 @@ class _$MenuImpl implements _Menu {
   @override
   @JsonKey(name: 'price_with_tax')
   final int priceWithTax;
+  @override
+  @JsonKey(name: 'food_types')
+  final FoodType foodType;
 
   @override
   String toString() {
-    return 'Menu(id: $id, name: $name, foodTypeId: $foodTypeId, createdAt: $createdAt, updatedAt: $updatedAt, imageUrl: $imageUrl, description: $description, orderCode: $orderCode, price: $price, priceWithTax: $priceWithTax)';
+    return 'Menu(id: $id, name: $name, foodTypeId: $foodTypeId, createdAt: $createdAt, updatedAt: $updatedAt, imageUrl: $imageUrl, description: $description, orderCode: $orderCode, price: $price, priceWithTax: $priceWithTax, foodType: $foodType)';
   }
 
   @override
@@ -288,13 +320,26 @@ class _$MenuImpl implements _Menu {
                 other.orderCode == orderCode) &&
             (identical(other.price, price) || other.price == price) &&
             (identical(other.priceWithTax, priceWithTax) ||
-                other.priceWithTax == priceWithTax));
+                other.priceWithTax == priceWithTax) &&
+            (identical(other.foodType, foodType) ||
+                other.foodType == foodType));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name, foodTypeId, createdAt,
-      updatedAt, imageUrl, description, orderCode, price, priceWithTax);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      foodTypeId,
+      createdAt,
+      updatedAt,
+      imageUrl,
+      description,
+      orderCode,
+      price,
+      priceWithTax,
+      foodType);
 
   @JsonKey(ignore: true)
   @override
@@ -321,7 +366,8 @@ abstract class _Menu implements Menu {
           final String? description,
           @JsonKey(name: 'order_code') required final String orderCode,
           required final int price,
-          @JsonKey(name: 'price_with_tax') required final int priceWithTax}) =
+          @JsonKey(name: 'price_with_tax') required final int priceWithTax,
+          @JsonKey(name: 'food_types') required final FoodType foodType}) =
       _$MenuImpl;
 
   factory _Menu.fromJson(Map<String, dynamic> json) = _$MenuImpl.fromJson;
@@ -352,6 +398,9 @@ abstract class _Menu implements Menu {
   @override
   @JsonKey(name: 'price_with_tax')
   int get priceWithTax;
+  @override
+  @JsonKey(name: 'food_types')
+  FoodType get foodType;
   @override
   @JsonKey(ignore: true)
   _$$MenuImplCopyWith<_$MenuImpl> get copyWith =>

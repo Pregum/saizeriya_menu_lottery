@@ -1,4 +1,4 @@
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:saizeriya_menu_lottery/model/menu.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
@@ -9,11 +9,15 @@ part 'menu_repository.g.dart';
 @Riverpod(dependencies: [supabase])
 Future<List<Menu>> fetchAllMenus(FetchAllMenusRef ref) async {
   final repo = ref.read(supabaseProvider);
-  final result = await repo.client.from('menus').select<List<dynamic>>('*');
+  final result = await repo.client.from('menus').select<List<dynamic>>('*, food_types(name)');
   if (result.isEmpty) {
     return [];
   }
-  final menus = result.map((e) => Menu.fromJson(e)).toList();
+  // final menus = result.map((e) => Menu.fromJson(e)).toList();
+  final menus = result.map((e) {
+    debugPrint('e: $e');
+    return Menu.fromJson(e);
+  }).toList();
   return menus;
 }
 

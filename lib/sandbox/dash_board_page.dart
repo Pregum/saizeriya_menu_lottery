@@ -319,8 +319,7 @@ class DashBoardPage extends HookConsumerWidget {
                                             alignment: Alignment.centerLeft,
                                             child: Text(
                                               menus[selectedMenuIndex.value!]
-                                                      .name ??
-                                                  '',
+                                                      .name,
                                               // dummyMenus[
                                               //     selectedMenuIndex.value!],
                                               style: Theme.of(context)
