@@ -15,6 +15,10 @@
 * iOS
 * Android
 
+## 特定原材料アイコンをお借りしたサイト様
+
+https://pakelog.net/allegy_illust
+
 ## ホスティングURL
 
 // TBD
