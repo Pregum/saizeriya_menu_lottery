@@ -12,7 +12,9 @@ import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:simple_icons/simple_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 Future<void> main() async {
   await runZonedGuarded(
@@ -71,6 +73,8 @@ class DashBoardPage extends HookConsumerWidget {
   DashBoardPage({super.key});
   final itemController = ItemScrollController();
 
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // TODO: 向き先をDBに差し替える
@@ -83,22 +87,185 @@ class DashBoardPage extends HookConsumerWidget {
         asyncMenus.maybeWhen(data: (data) => data.length, orElse: () => 0);
 
     return Scaffold(
+      key: _scaffoldKey,
+      endDrawer: Drawer(
+        child: ListView(
+          children: [
+            InkWell(
+              onTap: () async {
+                final uri = Uri.parse(
+                    'https://github.com/Pregum/saizeriya_menu_lottery');
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri);
+                }
+              },
+              child: const SizedBox(
+                height: 50,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('GitHubのリポジトリ'),
+                    Icon(SimpleIcons.github),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                // final _ = ref.refresh(fetchAllMenusProvider.future);
+                Navigator.of(context).pop();
+                showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: _scaffoldKey.currentContext!,
+                  builder: (context) {
+                    return Container(
+                      margin: const EdgeInsets.all(16),
+                      height: MediaQuery.sizeOf(context).height / 2,
+                      width: MediaQuery.sizeOf(context).width,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'このサイトについて',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            const Text('このサイトは有志が開発した、非公式のファンサイトです。'),
+                            const Text('メニューは現在のメニューと異なる場合がございます。'),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  const TextSpan(text: 'ご報告・ご要望がございましたら、'),
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri.parse(
+                                            'https://twitter.com/pregum_fox');
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(uri);
+                                        }
+                                      },
+                                    text: 'Twitter',
+                                    style: const TextStyle(color: Colors.blue),
+                                  ),
+                                  const TextSpan(text: 'もしくはこちらの'),
+                                  TextSpan(
+                                    text: 'フォーム',
+                                    style: const TextStyle(
+                                      color: Colors.blue,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri.parse(
+                                            'https://docs.google.com/forms/d/e/1FAIpQLSfuDA9lIawsZkstr9PBA4gOh2HSILscaXtFS5dsMXXPFSQsog/viewform?usp=sf_link');
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(uri);
+                                        }
+                                      },
+                                  ),
+                                  const TextSpan(text: 'までご連絡ください。'),
+                                ],
+                              ),
+                            ),
+                            const Gap(16),
+                            Text(
+                              'メニューについて',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            ),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'グランドメニュー',
+                                    style: const TextStyle(color: Colors.blue),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri.parse(
+                                            'https://book.saizeriya.co.jp/library/menu1907/book/list');
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(uri);
+                                        }
+                                      },
+                                  ),
+                                  const TextSpan(text: 'と'),
+                                  TextSpan(
+                                    text: 'アレルゲン・カロリー塩分情報一覧',
+                                    style: const TextStyle(color: Colors.blue),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () async {
+                                        final uri = Uri.parse(
+                                            'https://allergy.saizeriya.co.jp/');
+                                        if (await canLaunchUrl(uri)) {
+                                          await launchUrl(uri);
+                                        }
+                                      },
+                                  ),
+                                  const TextSpan(
+                                      text:
+                                          'の情報を使用しております。'),
+                                ],
+                              ),
+                            ),
+                            const Text('また、特定原材料は表示が必須な8品目のみ表示しております。'),
+                            const Gap(16),
+                            Text('免責事項',
+                                style: Theme.of(context).textTheme.titleLarge),
+                            const Text('何らかの都合で直接・間接的に生じた損失に関し一切責任を負いかねます。'),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                );
+              },
+              child: const SizedBox(
+                height: 50,
+                child: Center(
+                  child: Text('このサイトについて'),
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                showLicensePage(context: context);
+              },
+              child: const SizedBox(
+                height: 50,
+                child: Center(
+                  child: Text('ライセンス'),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              // height: 30,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-                  child: Text('Grand Menu',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontSize: 24)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+                    child: Text('Grand Menu',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontSize: 24)),
+                  ),
                 ),
-              ),
+                const Spacer(),
+                DrawerButton(
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openEndDrawer();
+                  },
+                )
+              ],
             ),
             Flexible(
               flex: 2,
@@ -123,75 +290,91 @@ class DashBoardPage extends HookConsumerWidget {
                     Expanded(
                       flex: 1,
                       child: Container(
-                          margin: const EdgeInsets.all(8),
-                          child: asyncMenus.when(
-                              data: (menus) {
-                                return ScrollablePositionedList.separated(
-                                  // return ListView.separated(
-                                  // controller: scrollController,
-                                  itemScrollController: itemController,
-                                  itemBuilder: (context, index) {
-                                    // final menu = dummyMenus[index];
-                                    final menu = menus[index];
-                                    return Material(
-                                      color: selectedMenuIndex.value == index
-                                          ? Colors.tealAccent
-                                          : Colors.transparent,
-                                      child: InkWell(
-                                        onTap: () =>
-                                            selectedMenuIndex.value = index,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          // mainAxisAlignment:
-                                          //     MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Gap(8),
-                                            Expanded(
-                                              child: AutoSizeText(
-                                                menu.name,
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                minFontSize: 10,
-                                              ),
-                                            ),
-                                            const Gap(8),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 4.0),
-                                              child: AutoSizeText(
-                                                menu.orderCode,
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                            ),
-                                          ],
+                        margin: const EdgeInsets.all(8),
+                        child: asyncMenus.when(
+                          data: (menus) {
+                            return ScrollablePositionedList.separated(
+                              // return ListView.separated(
+                              // controller: scrollController,
+                              itemScrollController: itemController,
+                              itemBuilder: (context, index) {
+                                // final menu = dummyMenus[index];
+                                final menu = menus[index];
+                                return Material(
+                                  color: selectedMenuIndex.value == index
+                                      ? Colors.tealAccent
+                                      : Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () =>
+                                        selectedMenuIndex.value = index,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      // mainAxisAlignment:
+                                      //     MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Gap(8),
+                                        Expanded(
+                                          child: AutoSizeText(
+                                            menu.name,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            minFontSize: 10,
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  // itemCount: dummyMenus.length,
-                                  itemCount: menus.length,
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    if (index % 5 == 0) {
-                                      return const Divider(
-                                        indent: 5,
-                                        thickness: 1.5,
-                                        endIndent: 15,
-                                      );
-                                    } else {
-                                      return const SizedBox.shrink();
-                                    }
-                                  },
+                                        const Gap(8),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 4.0),
+                                          child: AutoSizeText(
+                                            menu.orderCode,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 );
                               },
-                              error: (error, stackTrace) {
-                                debugPrint(
-                                    'error: $error, stackTrace: $stackTrace');
-                                return const Center(child: Text('oops!'));
+                              // itemCount: dummyMenus.length,
+                              itemCount: menus.length,
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                if (index % 5 == 0) {
+                                  return const Divider(
+                                    indent: 5,
+                                    thickness: 1.5,
+                                    endIndent: 15,
+                                  );
+                                } else {
+                                  return const SizedBox.shrink();
+                                }
                               },
-                              loading: () => const Center(
-                                  child:
-                                      CircularProgressIndicator.adaptive()))),
+                            );
+                          },
+                          error: (error, stackTrace) {
+                            debugPrint(
+                                'error: $error, stackTrace: $stackTrace');
+                            // return const Center(child: Text('oops!'));
+                            return Center(
+                              child: Column(
+                                children: [
+                                  const Text('うまく読み込めませんでした。'),
+                                  FilledButton(
+                                    onPressed: () {
+                                      final _ = ref.refresh(
+                                          fetchAllMenusProvider.future);
+                                    },
+                                    child: const Text('再読み込み'),
+                                  )
+                                ],
+                              ),
+                            );
+                          },
+                          loading: () => const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -455,17 +638,6 @@ class DashBoardPage extends HookConsumerWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          Container(
-                            height: 24,
-                            margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                '操作',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ),
-                          ),
                           Expanded(
                             flex: 1,
                             child: Container(
@@ -516,29 +688,9 @@ class DashBoardPage extends HookConsumerWidget {
                                     ),
                                   ),
                                 ),
-                                Expanded(
+                                const Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4),
-                                    margin: const EdgeInsets.all(8),
-                                    child: Material(
-                                      // color: Colors.lightBlue,
-                                      elevation: 2,
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: InkWell(
-                                        onTap: () {},
-                                        child: const Column(
-                                          children: [
-                                            Expanded(
-                                              child: Icon(Icons.add_circle),
-                                            ),
-                                            Text('オーダーに追加'),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  child: Spacer(),
                                 ),
                                 Expanded(
                                   flex: 1,
@@ -619,24 +771,21 @@ class DashBoardPage extends HookConsumerWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu_book),
-            label: 'Grand Menu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.stars_outlined),
-            label: 'Special Menu',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            label: 'Order List',
-          ),
-        ],
-      ),
-      // bottomNavigationBar: const PersistentBottomNavBar(
-      //   navBarStyle: NavBarStyle.style9,
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.menu_book),
+      //       label: 'Grand Menu',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.stars_outlined),
+      //       label: 'Special Menu',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.shopping_cart_outlined),
+      //       label: 'Order List',
+      //     ),
+      //   ],
       // ),
     );
   }
