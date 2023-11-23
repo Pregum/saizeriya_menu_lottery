@@ -9,14 +9,23 @@ part of 'menu.dart';
 _$MenuImpl _$$MenuImplFromJson(Map<String, dynamic> json) => _$MenuImpl(
       id: json['id'] as int,
       name: json['name'] as String? ?? '',
-      foodTypeId: json['food_type_id'] as int? ?? null,
+      foodTypeId: json['food_type_id'] as int,
       createdAt: json['created_at'] == null
           ? null
           : DateTime.parse(json['created_at'] as String),
       updatedAt: json['updated_at'] == null
           ? null
           : DateTime.parse(json['updated_at'] as String),
-      imageUrl: json['image_url'] as String? ?? '',
+      imageUrl: json['image_url'] as String,
+      description: json['description'] as String? ?? null,
+      orderCode: json['order_code'] as String,
+      price: json['price'] as int,
+      priceWithTax: json['price_with_tax'] as int,
+      foodType: FoodType.fromJson(json['food_types'] as Map<String, dynamic>),
+      allergens: (json['allergens'] as List<dynamic>?)
+              ?.map((e) => Allergen.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
 Map<String, dynamic> _$$MenuImplToJson(_$MenuImpl instance) =>
@@ -27,4 +36,10 @@ Map<String, dynamic> _$$MenuImplToJson(_$MenuImpl instance) =>
       'created_at': instance.createdAt?.toIso8601String(),
       'updated_at': instance.updatedAt?.toIso8601String(),
       'image_url': instance.imageUrl,
+      'description': instance.description,
+      'order_code': instance.orderCode,
+      'price': instance.price,
+      'price_with_tax': instance.priceWithTax,
+      'food_types': instance.foodType.toJson(),
+      'allergens': instance.allergens.map((e) => e.toJson()).toList(),
     };
