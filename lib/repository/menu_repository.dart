@@ -9,16 +9,25 @@ part 'menu_repository.g.dart';
 @Riverpod(dependencies: [supabase])
 Future<List<Menu>> fetchAllMenus(FetchAllMenusRef ref) async {
   final repo = ref.read(supabaseProvider);
-  final result = await repo.client.from('menus').select<List<dynamic>>('*, food_types(name)');
+  final result = await repo.client
+      .from('menus')
+      // .select<List<dynamic>>('*, food_types (name) ');
+      // .select<List<dynamic>>('*, food_types(id, name, created_at)');
+      .select<List<dynamic>>('*, food_types(*)');
   if (result.isEmpty) {
     return [];
   }
   // final menus = result.map((e) => Menu.fromJson(e)).toList();
-  final menus = result.map((e) {
-    debugPrint('e: $e');
-    return Menu.fromJson(e);
-  }).toList();
-  return menus;
+  try {
+    final menus = result.map((e) {
+      debugPrint('e: $e');
+      return Menu.fromJson(e);
+    }).toList();
+    return menus;
+  } catch (e) {
+    debugPrint('error!!! $e');
+    rethrow;
+  }
 }
 
 @Riverpod(dependencies: [supabase])
