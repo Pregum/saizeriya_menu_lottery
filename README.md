@@ -1,16 +1,24 @@
 # saizeriya_menu_lottery
 
-A new Flutter project.
+このリポジトリは、Flutter + Supabaseを使用して、サイゼリヤのメニューのグランドメニューを表示するサイト用のリポジトリです。
 
-## Getting Started
+## 使用している主なサービスライブラリ
 
-This project is a starting point for a Flutter application.
+* riverpod
+* flutter_hooks
+* supabase
+* url_launcher
 
-A few resources to get you started if this is your first Flutter project:
+## サポートしているプラットフォーム
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* Web
+* iOS
+* Android
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## ホスティングURL
+
+// TBD
+
+## 問い合わせ
+
+このリポジトリの問い合わせは、[X(旧Twitter)](https://twitter.com/pregum_fox)もしくは[フォーム](https://docs.google.com/forms/d/e/1FAIpQLSfuDA9lIawsZkstr9PBA4gOh2HSILscaXtFS5dsMXXPFSQsog/viewform?usp=sf_link) までお願いいたします。
