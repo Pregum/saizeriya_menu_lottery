@@ -86,19 +86,26 @@ class DashBoardPage extends HookConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              // height: 30,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-                  child: Text('Grand Menu',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(fontSize: 24)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+                    child: Text('Grand Menu',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineSmall
+                            ?.copyWith(fontSize: 24)),
+                  ),
                 ),
-              ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.menu),
+                )
+              ],
             ),
             Flexible(
               flex: 2,
@@ -455,17 +462,6 @@ class DashBoardPage extends HookConsumerWidget {
                     Expanded(
                       child: Column(
                         children: [
-                          Container(
-                            height: 24,
-                            margin: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                            child: Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                '操作',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              ),
-                            ),
-                          ),
                           Expanded(
                             flex: 1,
                             child: Container(
@@ -516,29 +512,9 @@ class DashBoardPage extends HookConsumerWidget {
                                     ),
                                   ),
                                 ),
-                                Expanded(
+                                const Expanded(
                                   flex: 1,
-                                  child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(vertical: 4),
-                                    margin: const EdgeInsets.all(8),
-                                    child: Material(
-                                      // color: Colors.lightBlue,
-                                      elevation: 2,
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: InkWell(
-                                        onTap: () {},
-                                        child: const Column(
-                                          children: [
-                                            Expanded(
-                                              child: Icon(Icons.add_circle),
-                                            ),
-                                            Text('オーダーに追加'),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  child: Spacer(),
                                 ),
                                 Expanded(
                                   flex: 1,
