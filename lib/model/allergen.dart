@@ -19,7 +19,7 @@ class Allergen with _$Allergen {
   factory Allergen.fromJson(Map<String, dynamic> json) =>
       _$AllergenFromJson(json);
   
-  AssetGenImage? get imageUrl {
+  AssetGenImage? get image {
     switch (id) {
       case 1:
         // 小麦

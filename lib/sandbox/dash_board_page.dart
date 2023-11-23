@@ -369,7 +369,11 @@ class DashBoardPage extends HookConsumerWidget {
 
                                       Wrap(
                                         alignment: WrapAlignment.center,
-                                        children: [Text('')],
+                                        children: [
+                                          ...menu.allergens
+                                              .where((e) => e.image != null)
+                                              .map((m) => m.image!.image())
+                                        ],
                                       ),
                                       // allergens.when(
                                       //   data: (fetchedAllergen) {
