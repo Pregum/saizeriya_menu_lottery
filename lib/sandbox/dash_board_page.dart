@@ -87,6 +87,7 @@ class DashBoardPage extends HookConsumerWidget {
     final selectedMenuIndex = useState<int?>(null);
     final selectedFoodTypes = useState<List<int>>([]);
     final scrollController = useScrollController();
+    final selectedMenu = useState<Menu?>(null);
     // final scrollController = useScrollController();
     // final asyncMenus = ref.watch(fetchAllMenusProvider);
     final asyncMenus = ref.watch(fetchAllMenusProvider);
@@ -152,8 +153,7 @@ class DashBoardPage extends HookConsumerWidget {
                                 height: 50,
                                 width: double.infinity,
                                 child: Listener(
-                                  onPointerSignal:
-                                      (PointerSignalEvent event) {
+                                  onPointerSignal: (PointerSignalEvent event) {
                                     if (event is PointerScrollEvent) {
                                       var scrollAmount = event.scrollDelta.dy;
                                       if (!scrollController.hasClients) {
@@ -163,8 +163,8 @@ class DashBoardPage extends HookConsumerWidget {
                                           scrollController.position.pixels;
                                       scrollController.animateTo(
                                           currentPos + scrollAmount,
-                                          duration: const Duration(
-                                              milliseconds: 100),
+                                          duration:
+                                              const Duration(milliseconds: 100),
                                           curve: Curves.ease);
                                     }
                                   },
@@ -195,6 +195,24 @@ class DashBoardPage extends HookConsumerWidget {
                                                       (e) => e != foodType.id)
                                                   .toList();
                                             }
+
+                                            selectedMenuIndex.value = null;
+
+                                            // final isShowingSelectedMenu =
+                                            //     selectedMenu.value != null &&
+                                            //         selectedFoodTypes.value
+                                            //             .contains(selectedMenu
+                                            //                 .value!.foodTypeId);
+                                            // final selectedAllFoodType =
+                                            //     selectedFoodTypes.value.isEmpty;
+                                            // if (isShowingSelectedMenu ||
+                                            //     selectedAllFoodType) {
+                                            //   // TODO: ここで、フィルタ後のindexを更新する処理を入れる。
+                                            //   // 現状他の商品が選択されているようなUIになるため、フィルタ後はindexはnullにしている
+                                            //   // final nextSelectedMenuIndex = rawmenus.where()
+                                            // } else {
+                                            //   selectedMenuIndex.value = null;
+                                            // }
                                           },
                                         );
                                       },
@@ -220,7 +238,18 @@ class DashBoardPage extends HookConsumerWidget {
                             child: Container(
                               margin: const EdgeInsets.all(8),
                               child: asyncMenus.when(
-                                data: (menus) {
+                                data: (rawMenus) {
+                                  final List<Menu> menus;
+                                  if (selectedFoodTypes.value.isEmpty) {
+                                    menus = rawMenus;
+                                  } else {
+                                    menus = rawMenus
+                                        .where(
+                                          (e) => selectedFoodTypes.value
+                                              .contains(e.foodTypeId),
+                                        )
+                                        .toList();
+                                  }
                                   return ScrollablePositionedList.separated(
                                     // return ListView.separated(
                                     // controller: scrollController,
@@ -233,8 +262,10 @@ class DashBoardPage extends HookConsumerWidget {
                                             ? Colors.tealAccent
                                             : Colors.transparent,
                                         child: InkWell(
-                                          onTap: () =>
-                                              selectedMenuIndex.value = index,
+                                          onTap: () {
+                                            selectedMenuIndex.value = index;
+                                            selectedMenu.value = menu;
+                                          },
                                           child: Row(
                                             mainAxisSize: MainAxisSize.max,
                                             // mainAxisAlignment:
@@ -330,13 +361,13 @@ class DashBoardPage extends HookConsumerWidget {
                         builder:
                             (BuildContext context, BoxConstraints constraints) {
                           return asyncMenus.when(
-                            data: (menus) {
+                            data: (rawMenus) {
                               return Column(
                                 // mainAxisAlignment: MainAxisAlignment.center,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   Flexible(
-                                      child: selectedMenuIndex.value != null
+                                      child: selectedMenu.value != null
                                           ? Container(
                                               // color: Colors.lightBlueAccent,
                                               margin: const EdgeInsets.all(8),
@@ -346,8 +377,7 @@ class DashBoardPage extends HookConsumerWidget {
                                                       BorderRadius.circular(8)),
                                               // child: Assets.images.dummyImage.image(),
                                               child: Image.network(
-                                                menus[selectedMenuIndex.value!]
-                                                    .imageUrl,
+                                                selectedMenu.value!.imageUrl,
                                                 loadingBuilder:
                                                     (context, child, event) {
                                                   if (event != null) {
@@ -378,7 +408,7 @@ class DashBoardPage extends HookConsumerWidget {
                                           : const Center(
                                               child: Text(
                                                   'メニューを選択すると、ここに料理の画像が表示されます。'))),
-                                  selectedMenuIndex.value != null
+                                  selectedMenu.value != null
                                       ? Container(
                                           alignment: Alignment.centerRight,
                                           height: 25,
@@ -389,14 +419,14 @@ class DashBoardPage extends HookConsumerWidget {
                                               children: [
                                                 TextSpan(
                                                   text:
-                                                      '${menus[selectedMenuIndex.value!].price}円',
+                                                      '${selectedMenu.value!.price}円',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleLarge,
                                                 ),
                                                 TextSpan(
                                                   text:
-                                                      '(税込み ${menus[selectedMenuIndex.value!].priceWithTax}円)',
+                                                      '(税込み ${selectedMenu.value!.priceWithTax}円)',
                                                   style: Theme.of(context)
                                                       .textTheme
                                                       .titleSmall,
@@ -432,12 +462,22 @@ class DashBoardPage extends HookConsumerWidget {
                         child: Container(
                             margin: const EdgeInsets.all(8),
                             child: asyncMenus.when(
-                                data: (menus) {
+                                data: (rawMenus) {
+                                  // final List<Menu> menus;
+                                  // if (selectedFoodTypes.value.isEmpty) {
+                                  //   menus = rawMenus;
+                                  // } else {
+                                  //   menus = rawMenus
+                                  //       .where(
+                                  //         (e) => selectedFoodTypes.value
+                                  //             .contains(e.foodTypeId),
+                                  //       )
+                                  //       .toList();
+                                  // }
                                   final hasSelectedMenu =
-                                      selectedMenuIndex.value != null;
+                                      selectedMenu.value != null;
                                   if (hasSelectedMenu) {
-                                    final menu =
-                                        menus[selectedMenuIndex.value!];
+                                    final menu = selectedMenu.value!;
 
                                     return Column(
                                       children: [
@@ -551,6 +591,23 @@ class DashBoardPage extends HookConsumerWidget {
                                       borderRadius: BorderRadius.circular(8),
                                       child: InkWell(
                                         onTap: () {
+                                          final rawMenus = asyncMenus.maybeWhen(
+                                              data: (value) => value,
+                                              loading: () => <Menu>[],
+                                              orElse: () {
+                                                return <Menu>[];
+                                              });
+                                          final List<Menu> menus;
+                                          if (selectedFoodTypes.value.isEmpty) {
+                                            menus = rawMenus;
+                                          } else {
+                                            menus = rawMenus
+                                                .where(
+                                                  (e) => selectedFoodTypes.value
+                                                      .contains(e.foodTypeId),
+                                                )
+                                                .toList();
+                                          }
                                           final hasPreviousMenu =
                                               selectedMenuIndex.value != null &&
                                                   0 <=
@@ -561,6 +618,9 @@ class DashBoardPage extends HookConsumerWidget {
                                           if (hasPreviousMenu) {
                                             selectedMenuIndex.value =
                                                 selectedMenuIndex.value! - 1;
+                                            final nextMenu =
+                                                menus[selectedMenuIndex.value!];
+                                            selectedMenu.value = nextMenu;
                                             // final offset = Offset();
                                             itemController.scrollTo(
                                               index: selectedMenuIndex.value!,
@@ -599,14 +659,25 @@ class DashBoardPage extends HookConsumerWidget {
                                       borderRadius: BorderRadius.circular(8),
                                       child: InkWell(
                                         onTap: () {
-                                          final menus = asyncMenus.maybeWhen(
+                                          final rawMenus = asyncMenus.maybeWhen(
                                               data: (value) => value,
-                                              loading: () => [],
+                                              loading: () => <Menu>[],
                                               orElse: () {
-                                                return [];
+                                                return <Menu>[];
                                               });
-                                          if (menus.isEmpty) {
+                                          if (rawMenus.isEmpty) {
                                             return;
+                                          }
+                                          final List<Menu> menus;
+                                          if (selectedFoodTypes.value.isEmpty) {
+                                            menus = rawMenus;
+                                          } else {
+                                            menus = rawMenus
+                                                .where(
+                                                  (e) => selectedFoodTypes.value
+                                                      .contains(e.foodTypeId),
+                                                )
+                                                .toList();
                                           }
                                           final hasNextMenu =
                                               selectedMenuIndex.value != null &&
@@ -616,6 +687,9 @@ class DashBoardPage extends HookConsumerWidget {
                                           if (hasNextMenu) {
                                             selectedMenuIndex.value =
                                                 selectedMenuIndex.value! + 1;
+                                            final nextMenu =
+                                                menus[selectedMenuIndex.value!];
+                                            selectedMenu.value = nextMenu;
 
                                             itemController.scrollTo(
                                               index: selectedMenuIndex.value!,
