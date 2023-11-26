@@ -161,7 +161,7 @@ class DashBoardPage extends HookConsumerWidget {
                                       onSelected: (bool value) {
                                         debugPrint(
                                             'name: ${foodType.name}, value: $value');
-                                        final list = selectedFoodTypes.value;
+                                        final list = List<int>.of(selectedFoodTypes.value);
                                         if (value) {
                                           list.add(foodType.id);
                                           selectedFoodTypes.value = list;
@@ -188,6 +188,7 @@ class DashBoardPage extends HookConsumerWidget {
                             error: (error, stackTrace) => const Center(
                                 child: Text('エラーが発生しました、再読み込みしてください。')),
                           ),
+                          const SizedBox(height: 2, child: Divider()),
                           Expanded(
                             child: Container(
                               margin: const EdgeInsets.all(8),
