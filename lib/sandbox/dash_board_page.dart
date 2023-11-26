@@ -9,6 +9,8 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
+import 'package:saizeriya_menu_lottery/model/allergen.dart';
+import 'package:saizeriya_menu_lottery/model/menu.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -566,11 +568,10 @@ class DashBoardPage extends HookConsumerWidget {
                                         ),
                                         const Gap(8),
                                         Wrap(
-                                          alignment: WrapAlignment.center,
+                                          // alignment: WrapAlignment.center,
+                                          direction: Axis.horizontal,
                                           children: [
-                                            ...menu.allergens
-                                                .where((e) => e.image != null)
-                                                .map((m) => m.image!.image())
+                                            ..._buildAllergenIcon(menu, context)
                                           ],
                                         ),
                                         const Gap(8),
@@ -772,6 +773,25 @@ class DashBoardPage extends HookConsumerWidget {
       //     ),
       //   ],
       // ),
+    );
+  }
+
+  Iterable<Widget> _buildAllergenIcon(Menu menu, BuildContext context) {
+    // TODO: Wrapだと何故かColumnが横幅いっぱいまで広がってしまうので、SizedBoxで。
+    // できれば、内部widgetのサイズに応じて適当なサイズにしたい
+    return menu.allergens.where((e) => e.image != null).map(
+      (m) {
+        return SizedBox(
+          width: MediaQuery.sizeOf(context).width / 12,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              m.image!.image(),
+              Align(alignment: Alignment.center, child: Text(m.name ?? ''))
+            ],
+          ),
+        );
+      },
     );
   }
 }
