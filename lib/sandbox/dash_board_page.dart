@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -85,6 +86,7 @@ class DashBoardPage extends HookConsumerWidget {
     // final dummyMenus = ref.watch(dummyData(20));
     final selectedMenuIndex = useState<int?>(null);
     final selectedFoodTypes = useState<List<int>>([]);
+    final scrollController = useScrollController();
     // final scrollController = useScrollController();
     // final asyncMenus = ref.watch(fetchAllMenusProvider);
     final asyncMenus = ref.watch(fetchAllMenusProvider);
@@ -149,34 +151,59 @@ class DashBoardPage extends HookConsumerWidget {
                               return SizedBox(
                                 height: 50,
                                 width: double.infinity,
-                                child: ListView.separated(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    final foodType = foodTypes[index];
-                                    final isSelected = selectedFoodTypes.value
-                                        .contains(foodType.id);
-                                    return FilterChip(
-                                      label: Text(foodType.name ?? ''),
-                                      selected: isSelected,
-                                      onSelected: (bool value) {
-                                        debugPrint(
-                                            'name: ${foodType.name}, value: $value');
-                                        final list = List<int>.of(selectedFoodTypes.value);
-                                        if (value) {
-                                          list.add(foodType.id);
-                                          selectedFoodTypes.value = list;
-                                        } else {
-                                          selectedFoodTypes.value = list
-                                              .where((e) => e != foodType.id)
-                                              .toList();
-                                        }
-                                      },
-                                    );
+                                child: Listener(
+                                  onPointerSignal:
+                                      (PointerSignalEvent event) {
+                                    if (event is PointerScrollEvent) {
+                                      var scrollAmount = event.scrollDelta.dy;
+                                      if (!scrollController.hasClients) {
+                                        return;
+                                      }
+                                      final currentPos =
+                                          scrollController.position.pixels;
+                                      scrollController.animateTo(
+                                          currentPos + scrollAmount,
+                                          duration: const Duration(
+                                              milliseconds: 100),
+                                          curve: Curves.ease);
+                                    }
                                   },
-                                  itemCount: foodTypes.length,
-                                  separatorBuilder: (context, index) =>
-                                      const Padding(
-                                          padding: EdgeInsets.all(8.0)),
+                                  child: ScrollConfiguration(
+                                    behavior: HorizontalScrollBehavior(),
+                                    child: ListView.separated(
+                                      controller: scrollController,
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        final foodType = foodTypes[index];
+                                        final isSelected = selectedFoodTypes
+                                            .value
+                                            .contains(foodType.id);
+                                        return FilterChip(
+                                          label: Text(foodType.name ?? ''),
+                                          selected: isSelected,
+                                          onSelected: (bool value) {
+                                            debugPrint(
+                                                'name: ${foodType.name}, value: $value');
+                                            final list = List<int>.of(
+                                                selectedFoodTypes.value);
+                                            if (value) {
+                                              list.add(foodType.id);
+                                              selectedFoodTypes.value = list;
+                                            } else {
+                                              selectedFoodTypes.value = list
+                                                  .where(
+                                                      (e) => e != foodType.id)
+                                                  .toList();
+                                            }
+                                          },
+                                        );
+                                      },
+                                      itemCount: foodTypes.length,
+                                      separatorBuilder: (context, index) =>
+                                          const Padding(
+                                              padding: EdgeInsets.all(8.0)),
+                                    ),
+                                  ),
                                 ),
                               );
                             },
@@ -995,4 +1022,19 @@ class MenusCountWidget extends StatelessWidget {
       }),
     );
   }
+}
+
+class HorizontalScrollBehavior extends ScrollBehavior {
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+
+  @override
+  ScrollPhysics getScrollPhysics(BuildContext context) {
+    return const ClampingScrollPhysics();
+  }
+
+  @override
+  bool shouldNotify(ScrollBehavior oldDelegate) => false;
 }
