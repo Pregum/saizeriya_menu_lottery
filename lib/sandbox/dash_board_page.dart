@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
@@ -11,6 +12,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:saizeriya_menu_lottery/gen/assets.gen.dart';
 import 'package:saizeriya_menu_lottery/model/allergen.dart';
 import 'package:saizeriya_menu_lottery/model/menu.dart';
+import 'package:saizeriya_menu_lottery/repository/food_type_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/menu_repository.dart';
 import 'package:saizeriya_menu_lottery/repository/supabase.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -82,190 +84,17 @@ class DashBoardPage extends HookConsumerWidget {
     // TODO: 向き先をDBに差し替える
     // final dummyMenus = ref.watch(dummyData(20));
     final selectedMenuIndex = useState<int?>(null);
+    final selectedFoodTypes = useState<List<int>>([]);
     // final scrollController = useScrollController();
     // final asyncMenus = ref.watch(fetchAllMenusProvider);
     final asyncMenus = ref.watch(fetchAllMenusProvider);
     final numOfMenus =
         asyncMenus.maybeWhen(data: (data) => data.length, orElse: () => 0);
+    final foodTypes = ref.watch(fetchAllFoodTypeProvider);
 
     return Scaffold(
       key: _scaffoldKey,
-      endDrawer: Drawer(
-        child: ListView(
-          children: [
-            InkWell(
-              onTap: () async {
-                final uri = Uri.parse(
-                    'https://github.com/Pregum/saizeriya_menu_lottery');
-                if (await canLaunchUrl(uri)) {
-                  await launchUrl(uri);
-                }
-              },
-              child: const SizedBox(
-                height: 50,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('GitHubのリポジトリ'),
-                    Icon(SimpleIcons.github),
-                  ],
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                // final _ = ref.refresh(fetchAllMenusProvider.future);
-                Navigator.of(context).pop();
-                showModalBottomSheet(
-                  isScrollControlled: true,
-                  context: _scaffoldKey.currentContext!,
-                  builder: (context) {
-                    return Container(
-                      margin: const EdgeInsets.all(16),
-                      height: MediaQuery.sizeOf(context).height - 50,
-                      width: MediaQuery.sizeOf(context).width,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'このサイトについて',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            const Text(
-                                'このサイトは有志が開発した、サイゼリヤのメニューが閲覧できる非公式のファンサイトです。'),
-                            const Text('現在のメニューと異なる場合がございます。'),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  const TextSpan(text: 'ご報告・ご要望がございましたら、'),
-                                  TextSpan(
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final uri = Uri.parse(
-                                            'https://twitter.com/pregum_fox');
-                                        if (await canLaunchUrl(uri)) {
-                                          await launchUrl(uri);
-                                        }
-                                      },
-                                    text: 'Twitter',
-                                    style: const TextStyle(color: Colors.blue),
-                                  ),
-                                  const TextSpan(text: 'もしくはこちらの'),
-                                  TextSpan(
-                                    text: 'フォーム',
-                                    style: const TextStyle(
-                                      color: Colors.blue,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final uri = Uri.parse(
-                                            'https://docs.google.com/forms/d/e/1FAIpQLSfuDA9lIawsZkstr9PBA4gOh2HSILscaXtFS5dsMXXPFSQsog/viewform?usp=sf_link');
-                                        if (await canLaunchUrl(uri)) {
-                                          await launchUrl(uri);
-                                        }
-                                      },
-                                  ),
-                                  const TextSpan(text: 'までご連絡ください。'),
-                                ],
-                              ),
-                            ),
-                            const Gap(16),
-                            Text(
-                              '表示している情報について',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'グランドメニュー',
-                                    style: const TextStyle(color: Colors.blue),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final uri = Uri.parse(
-                                            'https://book.saizeriya.co.jp/library/menu1907/book/list');
-                                        if (await canLaunchUrl(uri)) {
-                                          await launchUrl(uri);
-                                        }
-                                      },
-                                  ),
-                                  const TextSpan(text: 'と'),
-                                  TextSpan(
-                                    text: 'アレルゲン・カロリー塩分情報一覧',
-                                    style: const TextStyle(color: Colors.blue),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final uri = Uri.parse(
-                                            'https://allergy.saizeriya.co.jp/');
-                                        if (await canLaunchUrl(uri)) {
-                                          await launchUrl(uri);
-                                        }
-                                      },
-                                  ),
-                                  const TextSpan(text: 'の情報を使用しております。'),
-                                ],
-                              ),
-                            ),
-                            const Text(
-                                '説明テキストがないものにつきましては、開発者が独自にテキストを追加しております。'),
-                            const Text('商品名については表記揺れがある可能性がございます。'),
-                            const Text('また、特定原材料は表示が必須な8品目のみ表示しております。'),
-                            Text.rich(
-                              TextSpan(
-                                children: [
-                                  const TextSpan(text: '特定原材料のアイコンは、'),
-                                  TextSpan(
-                                    text: 'こちらから',
-                                    style: const TextStyle(color: Colors.blue),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () async {
-                                        final uri = Uri.parse(
-                                            'https://pakelog.net/allegy_illust');
-                                        if (await canLaunchUrl(uri)) {
-                                          await launchUrl(uri);
-                                        }
-                                      },
-                                  ),
-                                  const TextSpan(text: 'お借りしました。'),
-                                ],
-                              ),
-                            ),
-                            const Gap(16),
-                            Text('免責事項',
-                                style: Theme.of(context).textTheme.titleLarge),
-                            const Text('当サイトの利用で直接・間接的に生じた損失に関し一切責任を負いかねます。'),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                );
-              },
-              child: const SizedBox(
-                height: 50,
-                child: Center(
-                  child: Text('このサイトについて'),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                showLicensePage(context: context);
-              },
-              child: const SizedBox(
-                height: 50,
-                child: Center(
-                  child: Text('ライセンス'),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      endDrawer: _MyDrawer(scaffoldKey: _scaffoldKey),
       body: SafeArea(
         child: Column(
           children: [
@@ -313,91 +142,143 @@ class DashBoardPage extends HookConsumerWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        margin: const EdgeInsets.all(8),
-                        child: asyncMenus.when(
-                          data: (menus) {
-                            return ScrollablePositionedList.separated(
-                              // return ListView.separated(
-                              // controller: scrollController,
-                              itemScrollController: itemController,
-                              itemBuilder: (context, index) {
-                                // final menu = dummyMenus[index];
-                                final menu = menus[index];
-                                return Material(
-                                  color: selectedMenuIndex.value == index
-                                      ? Colors.tealAccent
-                                      : Colors.transparent,
-                                  child: InkWell(
-                                    onTap: () =>
-                                        selectedMenuIndex.value = index,
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      // mainAxisAlignment:
-                                      //     MainAxisAlignment.spaceBetween,
+                      child: Column(
+                        children: [
+                          foodTypes.when(
+                            data: (foodTypes) {
+                              return SizedBox(
+                                height: 50,
+                                width: double.infinity,
+                                child: ListView.separated(
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    final foodType = foodTypes[index];
+                                    final isSelected = selectedFoodTypes.value
+                                        .contains(foodType.id);
+                                    return FilterChip(
+                                      label: Text(foodType.name ?? ''),
+                                      selected: isSelected,
+                                      onSelected: (bool value) {
+                                        debugPrint(
+                                            'name: ${foodType.name}, value: $value');
+                                        final list = selectedFoodTypes.value;
+                                        if (value) {
+                                          list.add(foodType.id);
+                                          selectedFoodTypes.value = list;
+                                        } else {
+                                          selectedFoodTypes.value = list
+                                              .where((e) => e != foodType.id)
+                                              .toList();
+                                        }
+                                      },
+                                    );
+                                  },
+                                  itemCount: foodTypes.length,
+                                  separatorBuilder: (context, index) =>
+                                      const Padding(
+                                          padding: EdgeInsets.all(8.0)),
+                                ),
+                              );
+                            },
+                            loading: () {
+                              // TODO: スケルトンアニメーションにしてみる。
+                              return const Center(
+                                  child: CircularProgressIndicator.adaptive());
+                            },
+                            error: (error, stackTrace) => const Center(
+                                child: Text('エラーが発生しました、再読み込みしてください。')),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: const EdgeInsets.all(8),
+                              child: asyncMenus.when(
+                                data: (menus) {
+                                  return ScrollablePositionedList.separated(
+                                    // return ListView.separated(
+                                    // controller: scrollController,
+                                    itemScrollController: itemController,
+                                    itemBuilder: (context, index) {
+                                      // final menu = dummyMenus[index];
+                                      final menu = menus[index];
+                                      return Material(
+                                        color: selectedMenuIndex.value == index
+                                            ? Colors.tealAccent
+                                            : Colors.transparent,
+                                        child: InkWell(
+                                          onTap: () =>
+                                              selectedMenuIndex.value = index,
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.max,
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Gap(8),
+                                              Expanded(
+                                                child: AutoSizeText(
+                                                  menu.name,
+                                                  maxLines: 2,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  minFontSize: 10,
+                                                ),
+                                              ),
+                                              const Gap(8),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 4.0),
+                                                child: AutoSizeText(
+                                                  menu.orderCode,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    // itemCount: dummyMenus.length,
+                                    itemCount: menus.length,
+                                    separatorBuilder:
+                                        (BuildContext context, int index) {
+                                      if (index % 5 == 0) {
+                                        return const Divider(
+                                          indent: 5,
+                                          thickness: 1.5,
+                                          endIndent: 15,
+                                        );
+                                      } else {
+                                        return const SizedBox.shrink();
+                                      }
+                                    },
+                                  );
+                                },
+                                error: (error, stackTrace) {
+                                  debugPrint(
+                                      'error: $error, stackTrace: $stackTrace');
+                                  // return const Center(child: Text('oops!'));
+                                  return Center(
+                                    child: Column(
                                       children: [
-                                        const Gap(8),
-                                        Expanded(
-                                          child: AutoSizeText(
-                                            menu.name,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            minFontSize: 10,
-                                          ),
-                                        ),
-                                        const Gap(8),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 4.0),
-                                          child: AutoSizeText(
-                                            menu.orderCode,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
+                                        const Text('うまく読み込めませんでした。'),
+                                        FilledButton(
+                                          onPressed: () {
+                                            final _ = ref.refresh(
+                                                fetchAllMenusProvider.future);
+                                          },
+                                          child: const Text('再読み込み'),
+                                        )
                                       ],
                                     ),
-                                  ),
-                                );
-                              },
-                              // itemCount: dummyMenus.length,
-                              itemCount: menus.length,
-                              separatorBuilder:
-                                  (BuildContext context, int index) {
-                                if (index % 5 == 0) {
-                                  return const Divider(
-                                    indent: 5,
-                                    thickness: 1.5,
-                                    endIndent: 15,
                                   );
-                                } else {
-                                  return const SizedBox.shrink();
-                                }
-                              },
-                            );
-                          },
-                          error: (error, stackTrace) {
-                            debugPrint(
-                                'error: $error, stackTrace: $stackTrace');
-                            // return const Center(child: Text('oops!'));
-                            return Center(
-                              child: Column(
-                                children: [
-                                  const Text('うまく読み込めませんでした。'),
-                                  FilledButton(
-                                    onPressed: () {
-                                      final _ = ref.refresh(
-                                          fetchAllMenusProvider.future);
-                                    },
-                                    child: const Text('再読み込み'),
-                                  )
-                                ],
+                                },
+                                loading: () => const Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                ),
                               ),
-                            );
-                          },
-                          loading: () => const Center(
-                            child: CircularProgressIndicator.adaptive(),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ],
@@ -792,6 +673,200 @@ class DashBoardPage extends HookConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _MyDrawer extends StatelessWidget {
+  const _MyDrawer({
+    super.key,
+    required GlobalKey<ScaffoldState> scaffoldKey,
+  }) : _scaffoldKey = scaffoldKey;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey;
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        children: [
+          InkWell(
+            onTap: () async {
+              final uri =
+                  Uri.parse('https://github.com/Pregum/saizeriya_menu_lottery');
+              if (await canLaunchUrl(uri)) {
+                await launchUrl(uri);
+              }
+            },
+            child: const SizedBox(
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('GitHubのリポジトリ'),
+                  Icon(SimpleIcons.github),
+                ],
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              // final _ = ref.refresh(fetchAllMenusProvider.future);
+              Navigator.of(context).pop();
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: _scaffoldKey.currentContext!,
+                builder: (context) {
+                  return const _MyInformationModal();
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+              );
+            },
+            child: const SizedBox(
+              height: 50,
+              child: Center(
+                child: Text('このサイトについて'),
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              showLicensePage(context: context);
+            },
+            child: const SizedBox(
+              height: 50,
+              child: Center(
+                child: Text('ライセンス'),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MyInformationModal extends StatelessWidget {
+  const _MyInformationModal();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      height: MediaQuery.sizeOf(context).height - 50,
+      width: MediaQuery.sizeOf(context).width,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'このサイトについて',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            const Text('このサイトは有志が開発した、サイゼリヤのメニューが閲覧できる非公式のファンサイトです。'),
+            const Text('現在のメニューと異なる場合がございます。'),
+            RichText(
+              text: TextSpan(
+                children: [
+                  const TextSpan(text: 'ご報告・ご要望がございましたら、'),
+                  TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final uri = Uri.parse('https://twitter.com/pregum_fox');
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        }
+                      },
+                    text: 'Twitter',
+                    style: const TextStyle(color: Colors.blue),
+                  ),
+                  const TextSpan(text: 'もしくはこちらの'),
+                  TextSpan(
+                    text: 'フォーム',
+                    style: const TextStyle(
+                      color: Colors.blue,
+                    ),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final uri = Uri.parse(
+                            'https://docs.google.com/forms/d/e/1FAIpQLSfuDA9lIawsZkstr9PBA4gOh2HSILscaXtFS5dsMXXPFSQsog/viewform?usp=sf_link');
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        }
+                      },
+                  ),
+                  const TextSpan(text: 'までご連絡ください。'),
+                ],
+              ),
+            ),
+            const Gap(16),
+            Text(
+              '表示している情報について',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: 'グランドメニュー',
+                    style: const TextStyle(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final uri = Uri.parse(
+                            'https://book.saizeriya.co.jp/library/menu1907/book/list');
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        }
+                      },
+                  ),
+                  const TextSpan(text: 'と'),
+                  TextSpan(
+                    text: 'アレルゲン・カロリー塩分情報一覧',
+                    style: const TextStyle(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final uri =
+                            Uri.parse('https://allergy.saizeriya.co.jp/');
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        }
+                      },
+                  ),
+                  const TextSpan(text: 'の情報を使用しております。'),
+                ],
+              ),
+            ),
+            const Text('説明テキストがないものにつきましては、開発者が独自にテキストを追加しております。'),
+            const Text('商品名については表記揺れがある可能性がございます。'),
+            const Text('また、特定原材料は表示が必須な8品目のみ表示しております。'),
+            Text.rich(
+              TextSpan(
+                children: [
+                  const TextSpan(text: '特定原材料のアイコンは、'),
+                  TextSpan(
+                    text: 'こちらから',
+                    style: const TextStyle(color: Colors.blue),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final uri =
+                            Uri.parse('https://pakelog.net/allegy_illust');
+                        if (await canLaunchUrl(uri)) {
+                          await launchUrl(uri);
+                        }
+                      },
+                  ),
+                  const TextSpan(text: 'お借りしました。'),
+                ],
+              ),
+            ),
+            const Gap(16),
+            Text('免責事項', style: Theme.of(context).textTheme.titleLarge),
+            const Text('当サイトの利用で直接・間接的に生じた損失に関し一切責任を負いかねます。'),
+          ],
+        ),
+      ),
     );
   }
 }
